@@ -33,7 +33,6 @@ def detect(frame):
     count = 0
     centroids = []
     parents = []
-    print(hierarchy)
 
     contourId = 0
     for c in contours:
@@ -62,7 +61,6 @@ def detect(frame):
     mean = tuple(map(lambda y: sum(y) / float(len(y)), zip(*centroids)))
     print(mean)
     medianParent = np.median(parents)
-    print("Median parent: " + str(medianParent))
 
     contourId = 0
     for c in centroids:
