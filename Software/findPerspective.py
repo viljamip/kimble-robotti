@@ -7,7 +7,7 @@ def findTranform(sourceImage):
 
     #sourceImage = captureImage.captureFrame()
     queryImage = cv.cvtColor(sourceImage, cv.COLOR_BGR2GRAY)
-    refImage = cv.imread('img/kimble_ref_600.jpg',0) # trainImage
+    refImage = cv.imread('img/kimble_ref_800.jpg',0) # trainImage
 
     cv.normalize(sourceImage, sourceImage, 0, 255, cv.NORM_MINMAX)
     cv.normalize(queryImage, queryImage, 0, 255, cv.NORM_MINMAX)

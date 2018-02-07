@@ -6,18 +6,21 @@ MIN_PIP_FACTOR = 0.6
 MAX_PIP_FACTOR = 1.4
 
 erodeKernel = cv.getStructuringElement(cv.MORPH_ELLIPSE,(6,6))
-dilateKernel = cv.getStructuringElement(cv.MORPH_CROSS,(3,3))
+dilateKernel = cv.getStructuringElement(cv.MORPH_CROSS,(2,2))
 
 def detect(frame):
-    image = frame[240:350, 250:360]
-    gray = cv.cvtColor(image, cv.COLOR_RGB2GRAY) 
+    diameter = 170
+    width = frame.shape[0]
+    height = frame.shape[1]
+    roi = frame[(int(height/ 2) - int(diameter / 2)):(int(height / 2) + int(diameter / 2)), (int(width / 2) - int(diameter / 2)):(int(width / 2) + int(diameter / 2))]
+    gray = cv.cvtColor(roi, cv.COLOR_RGB2GRAY) 
     retval, bin = cv.threshold(gray, BINARIZATION_THRESHOLD, 255, cv.THRESH_BINARY) # select white die areas
     bin = cv.dilate(bin,dilateKernel, iterations=1) # dilate white areas to prevent pip fraying
     bin = cv.erode(bin,erodeKernel, iterations=1) # dilate white areas to prevent pip fraying 
     #bin = cv.dilate(bin,dilateKernel, iterations=1) # dilate white areas to prevent pip fraying
     bin = cv.bitwise_not(bin)
     mask = np.zeros(bin.shape, dtype = "uint8")
-    cv.circle(mask, (mask.shape[0]//2, mask.shape[1]//2), 55, (255,255,255),-1)
+    cv.circle(mask, (int(mask.shape[0]*0.5), int(mask.shape[1]*0.5)), int(diameter/1.9), (255,255,255),-1)
     bin = cv.bitwise_and(bin, mask)
     cv.imshow("Noppa", bin)
     cv.waitKey(0)

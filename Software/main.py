@@ -17,6 +17,6 @@ def main():
 
 
 def applyTransform(frame, M):
-    return cv.warpPerspective(frame, M, (600,600))
+    return cv.warpPerspective(frame, M, (800,800))
 
 main()
