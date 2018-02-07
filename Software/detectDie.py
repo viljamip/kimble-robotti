@@ -4,9 +4,9 @@ import math
 
 MIN_AREA = 5 
 MAX_AREA = 45
-MAX_CIRCULARITY_DEVIATION = 0.36
-TRESHOLD = 120
-MAX_DISTANCE_FROM_CENTER = 28
+MAX_CIRCULARITY_DEVIATION = 0.22
+TRESHOLD = 133
+MAX_DISTANCE_FROM_CENTER = 58
 DIAMETER = 180
 
 kernel = cv.getStructuringElement(cv.MORPH_ELLIPSE,(2,2))
@@ -23,7 +23,7 @@ def detect(frame):
     threshold = cv.adaptiveThreshold(grey,255,cv.ADAPTIVE_THRESH_MEAN_C, cv.THRESH_BINARY_INV,11,2)
     threshold = cv.morphologyEx(threshold, cv.MORPH_CLOSE, kernel, iterations=1)
     mask = np.zeros(threshold.shape, dtype = "uint8")
-    cv.circle(mask, (int(mask.shape[0]*0.5), int(mask.shape[1]*0.5)), int(DIAMETER*0.48), (255,255,255),-1)
+    cv.circle(mask, (int(mask.shape[0]*0.5), int(mask.shape[1]*0.5)), int(DIAMETER*0.47), (255,255,255),-1)
     mask = cv.bitwise_not(mask)
     threshold = cv.bitwise_or(threshold, mask)
     cv.imshow("threshold", threshold)
@@ -66,7 +66,9 @@ def detect(frame):
 
     contourId = 0
     for c in centroids:
-        distance = math.sqrt((mean[0] - c[0])**2 + (mean[1] - c[1])**2)
+        #distance = math.sqrt((mean[0] - c[0])**2 + (mean[1] - c[1])**2)
+        distance = abs(mean[0] - c[0]) + abs(mean[1] - c[1])
+        print(distance)
         if distance < MAX_DISTANCE_FROM_CENTER:
             if parents[contourId] == medianParent:
                 count += 1
