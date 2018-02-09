@@ -20,7 +20,7 @@ def detectDie(frame, showImages):
     dieNumber = dD.detect(frame) 
     print(dieNumber)
     if showImages:
-        cv.imshow("tranformed",frame)
+        #cv.imshow("tranformed",frame)
         cv.waitKey(0)
 
     return dieNumber
@@ -36,7 +36,7 @@ def runTests():
     passed = 0
     total = 0
 
-    for i in range(1,6):
+    for i in range(1,7):
         files = glob.glob("testImages/{0}/*.jpg".format(i))
         for f in files:
             passed += runTest(f, i)
@@ -51,7 +51,7 @@ def runTest(imageFileName, answer):
         print("TEST OK: ", imageFileName)
         return 1
     else:
-        print("TEST FAIL: got {0}, corrext {1}".format(dieNumber, answer),imageFileName)
+        print("TEST FAIL: got {0}, correct {1}".format(dieNumber, answer),imageFileName)
         return 0
 
 
