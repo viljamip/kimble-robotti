@@ -2,3 +2,5 @@
 *.py.swp
 *.pyc
 *.DS_Store
+*.swo
+*.swm
