@@ -5,7 +5,7 @@ MIN_AREA =  100
 MAX_AREA = 330
 MAX_CIRCULARITY_DEVIATION = 0.19
 TRESHOLD = 12
-MAX_DISTANCE_FROM_CENTER = 80
+MAX_DISTANCE_FROM_CENTER = 60
 DIAMETER = 175
 MAX_CIRCULARITY_DEVIATION = 0.29
 
@@ -18,8 +18,8 @@ def detect(frame):
     roiScaled = cv.resize(roi,None,fx=3, fy=3, interpolation = cv.INTER_CUBIC)    
     width = roiScaled.shape[0]
     height = roiScaled.shape[1]
-    grey = cv.cvtColor(roiScaled, cv.COLOR_RGB2GRAY) 
-    grey = cv.bilateralFilter(grey, 7, 35,35)
+    greyScaled = cv.cvtColor(roiScaled, cv.COLOR_RGB2GRAY) 
+    grey = cv.bilateralFilter(greyScaled, 7, 35,35)
     grey = cv.equalizeHist(grey)
     cv.imshow("bilateral", grey)
     laplacian = cv.Laplacian(grey,cv.CV_64F, ksize=3, scale=0.6)
@@ -80,7 +80,7 @@ def detect(frame):
     minY = height
     maxX = 0
     maxY = 0
-    padding = 100
+    padding = 80
 
     for cent in centroids:
         if cent[0] < minX:
@@ -102,69 +102,60 @@ def detect(frame):
     minY = constrain(minY, 0, height-padding)
     maxY = constrain(maxY, (minY + padding), height)
     print(minX,maxX,minY,maxY)
-    roiDie = roiScaled[minY:maxY, minX:maxX]
+    roiDie = greyScaled[minY:maxY, minX:maxX]
+    roiDie = cv.bilateralFilter(roiDie, 7, 75,75)
+    clahe = cv.createCLAHE(clipLimit=3.0, tileGridSize=(5,5))
+    roiDie = clahe.apply(roiDie)
+    #ret, dieThreshold = cv.threshold(roiDie, 150, 255, cv.THRESH_TOZERO)
+    #ret, dieThreshold = cv.threshold(roiDie, 0, 255, cv.THRESH_BINARY_INV+cv.THRESH_OTSU)
+    #kernel2 = cv.getStructuringElement(cv.MORPH_ELLIPSE,(3,3))
+    #dieThreshold = cv.erode(dieThreshold, kernel2, iterations=4) 
+
+    # Setup BlobDetector
+    detector = cv.SimpleBlobDetector_create()
+    params = cv.SimpleBlobDetector_Params()
+    # Filter by Area.
+    params.filterByArea = True
+    params.minArea = 300
+    params.maxArea = 900
+    # Filter by Circularity
+    params.filterByCircularity = True
+    params.minCircularity = 0.74
+    # Filter by Convexity
+    params.filterByConvexity = False
+    #params.minConvexity = 0.87
+    # Filter by Inertia
+    params.filterByInertia = False
+    params.maxInertiaRatio = 0.9
+    # Distance Between Blobs
+    params.minDistBetweenBlobs = 10
+    # Create a detector with the parameters
+    detector = cv.SimpleBlobDetector_create(params)
+ 
+    # Detect blobs.
+    keypoints = detector.detect(roiDie)
+     
+    # Draw detected blobs as red circles.
+    # cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS ensures the size of the circle corresponds to the size of blob
+    im_with_keypoints = cv.drawKeypoints(roiDie, keypoints, np.array([]), (0,0,255), cv.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+     
+    # Show keypoints
+    cv.imshow("Keypoints", im_with_keypoints)
     cv.imshow("noppa", roiDie)
+
+    # TODO TÄHÄN VIELÄ TARKISTUS rect = minAreaRect() koolle (neljä nurkkaa saa box = cv.boxPoints(rect) ), jonka avulla voidaan heivata outlier pisteet pois eli, pituus eikä leveys saa olla liian suuret
+    # TODO Tuon alueen koko riippuu pilkkujen määrästä, 1:lle oma, 2,3 oma ja loput kai täys neliö?
     cv.waitKey(0)
     
     contourId = 0
-    for c in centroids:
-        #distance = math.sqrt((mean[0] - c[0])**2 + (mean[1] - c[1])**2)
-        distance = abs(mean[0] - c[0]) + abs(mean[1] - c[1])
-        print(distance)
-        if distance < MAX_DISTANCE_FROM_CENTER:
-            count += 1
-        contourId += 1
-
+    for k in keypoints:
+        count += 1
     if count > 6: # Jos mukaan on tarttunut enemmänkin pisteitä, ei anneta ainakaan yli 6
         count = 6
     if count == 0: # Jos mukaan on tarttunut enemmänkin pisteitä, ei anneta ainakaan yli 6
         count = 1
 
     return count
-
-    
-    
-    
-    # VANHA IHAN OOKOO 
-    # detect circles in the image
-    #circlesImage = cv.GaussianBlur(laplacian,(11,11),0)
-    #ret, circlesImage = cv.threshold(circlesImage, 5,255,cv.THRESH_TOZERO)
-    #circlesImage = cv.equalizeHist(circlesImage)
-    #circles = cv.HoughCircles(circlesImage, cv.HOUGH_GRADIENT, 1.07,12,param1=16,param2=26,minRadius=8,maxRadius=20)
-   
-    # UUSI KOKEILU
-    # detect circles in the image
-    circlesImage = cv.cvtColor(roiScaled, cv.COLOR_BGR2GRAY)
-    circlesImage = cv.GaussianBlur(circlesImage,(5,5),0)
-    #circlesImage = cv.equalizeHist(circlesImage)
-    ret, circlesImage = cv.threshold(circlesImage, 90,255,cv.THRESH_TOZERO)
-    circlesImage = cv.GaussianBlur(circlesImage,(13,13),0)
-    circles = cv.HoughCircles(circlesImage, cv.HOUGH_GRADIENT, 1.010,12,param1=13,param2=24,minRadius=8,maxRadius=20)
-
-
-
-    # ensure at least some circles were found
-    if circles is not None:
-        output = cv.cvtColor(circlesImage, cv.COLOR_GRAY2BGR)
-        # convert the (x, y) coordinates and radius of the circles to integers
-        circles = np.round(circles[0, :]).astype("int")
- 
-        # loop over the (x, y) coordinates and radius of the circles
-        for (x, y, r) in circles:
-                # draw the circle in the output image, then draw a rectangle
-                # corresponding to the center of the circle
-                cv.circle(output, (x, y), r, (0, 255, 0), 4)
-                cv.rectangle(output, (x - 5, y - 5), (x + 5, y + 5), (0, 128, 255), -1)
- 
-        # show the output image
-        cv.imshow("output", output)
-    
-    cv.waitKey(0)
-    return len(circles) 
-# HoughTransform kuntoon?
-# PatternMatch yhdellä pilkulla?
-# DFT?
-# Gradientti?
 
 def constrain(val, min_val, max_val):
     return min(max_val, max(min_val, val))
