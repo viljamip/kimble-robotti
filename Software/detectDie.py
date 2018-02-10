@@ -22,6 +22,7 @@ def detect(frame):
     grey = cv.bilateralFilter(greyScaled, 7, 35,35)
     grey = cv.equalizeHist(grey)
     cv.imshow("bilateral", grey)
+    cv.imshow("straightened", frame)
     laplacian = cv.Laplacian(grey,cv.CV_64F, ksize=3, scale=0.6)
     #threshold = cv.erode(laplacian, kernel, iterations=1)
     #threshold = cv.dilate(threshold, kernel, iterations=2)
@@ -34,7 +35,7 @@ def detect(frame):
     threshold = cv.dilate(threshold, kernel, iterations=3)
     threshold = cv.erode(threshold, kernel, iterations=4)
     threshold = cv.dilate(threshold, kernel, iterations=2)
-    cv.imshow("laplacian", laplacian)
+    #cv.imshow("laplacian", laplacian)
     cv.imshow("threshLap", threshold)
     
     treshWcontours, contours0, hierarchy = cv.findContours(threshold, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE) # find contours
@@ -43,7 +44,6 @@ def detect(frame):
     count = 0
     centroids = []
 
-    contourId = 0
     for c in contours:
         area = cv.contourArea(c)
         if (area > MIN_AREA) and (area < MAX_AREA): # Pinta-ala on rajojen sisällä
@@ -57,22 +57,19 @@ def detect(frame):
             if abs(circularity) < MAX_CIRCULARITY_DEVIATION:
                 if threshold[cy][cx] == 255: # Keskipisteen väri on valkoinen
                     centroids.append((cx,cy))
-                    print("Area: " + str(area) + " x: " + str(cx) + " y: " + str(cy))
-        contourId += 1
+                    #print("Area: " + str(area) + " x: " + str(cx) + " y: " + str(cy))
             # Etsitään tresholdista kaikki contourit ja hylätään liian pienet ja suuret.
             # Sitten lasketaan ensin r = sqrt(Area/pi) ja vertaa 2*pi*r suuruutta arcLenghtiin, jos niiden suhde on lähellä 1, on alue pyöreä
             # Jos contourin keskipisteen väri on valkoinen eli 255, on se todennäköisesti nopan piste.
             # Jos contourin keskipiste on liian kaukana pisteiden keskiarvosta, ei se taida olla piste
-            # Jos contourin parent on eri kuin mediaaniparent, se hylätään
     if not centroids:
         return 1
     mean = tuple(map(lambda y: sum(y) / float(len(y)), zip(*centroids)))
-    print(mean)
+    #print(mean)
 
     for c in centroids:
-        #distance = math.sqrt((mean[0] - c[0])**2 + (mean[1] - c[1])**2)
         distance = abs(mean[0] - c[0]) + abs(mean[1] - c[1])
-        print(distance)
+        #print(distance)
         if distance > MAX_DISTANCE_FROM_CENTER:
             centroids.remove(c)
 
@@ -101,15 +98,11 @@ def detect(frame):
     maxX = constrain(maxX, (minX + padding), width)
     minY = constrain(minY, 0, height-padding)
     maxY = constrain(maxY, (minY + padding), height)
-    print(minX,maxX,minY,maxY)
+    #print(minX,maxX,minY,maxY)
     roiDie = greyScaled[minY:maxY, minX:maxX]
     roiDie = cv.bilateralFilter(roiDie, 7, 75,75)
     clahe = cv.createCLAHE(clipLimit=3.0, tileGridSize=(5,5))
     roiDie = clahe.apply(roiDie)
-    #ret, dieThreshold = cv.threshold(roiDie, 150, 255, cv.THRESH_TOZERO)
-    #ret, dieThreshold = cv.threshold(roiDie, 0, 255, cv.THRESH_BINARY_INV+cv.THRESH_OTSU)
-    #kernel2 = cv.getStructuringElement(cv.MORPH_ELLIPSE,(3,3))
-    #dieThreshold = cv.erode(dieThreshold, kernel2, iterations=4) 
 
     # Setup BlobDetector
     detector = cv.SimpleBlobDetector_create()
@@ -136,20 +129,18 @@ def detect(frame):
     keypoints = detector.detect(roiDie)
      
     # Draw detected blobs as red circles.
-    # cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS ensures the size of the circle corresponds to the size of blob
-    im_with_keypoints = cv.drawKeypoints(roiDie, keypoints, np.array([]), (0,0,255), cv.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-     
     # Show keypoints
+    count, validPoints = validatePoints(0,keypoints, roiDie.shape)
+    box = minAreaBox(validPoints, roiDie.shape)
+    im_with_keypoints = cv.drawKeypoints(roiDie, validPoints, np.array([]), (0,0,255), cv.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+    im_with_keypoints = cv.drawContours(im_with_keypoints,[box],0,(0,255,0),2)
     cv.imshow("Keypoints", im_with_keypoints)
-    cv.imshow("noppa", roiDie)
 
+    #minBoundingRect = cv.minAreaRect(keypoints)
     # TODO TÄHÄN VIELÄ TARKISTUS rect = minAreaRect() koolle (neljä nurkkaa saa box = cv.boxPoints(rect) ), jonka avulla voidaan heivata outlier pisteet pois eli, pituus eikä leveys saa olla liian suuret
     # TODO Tuon alueen koko riippuu pilkkujen määrästä, 1:lle oma, 2,3 oma ja loput kai täys neliö?
     cv.waitKey(0)
     
-    contourId = 0
-    for k in keypoints:
-        count += 1
     if count > 6: # Jos mukaan on tarttunut enemmänkin pisteitä, ei anneta ainakaan yli 6
         count = 6
     if count == 0: # Jos mukaan on tarttunut enemmänkin pisteitä, ei anneta ainakaan yli 6
@@ -157,5 +148,59 @@ def detect(frame):
 
     return count
 
+def validatePoints(level,keypoints, shape):
+    targetA = [0,28,30,30,85,85,81,0,0,0]
+    targetB = [0,28,107,107,85,85,81,0,0,0]
+
+    count = len(keypoints)
+    index = -1
+    pointsToTest = keypoints
+       
+    while count > 1:
+        pointsToTest = list(keypoints)
+        if(index >= 0):
+            pointsToTest.pop(index)
+
+        n = len(pointsToTest)
+        a,b = calculateBoxDimensions(pointsToTest, shape)
+        print(min(a,b), max(a,b))
+        print(targetA[n],  targetB[n])
+        if abs(min(a,b) / targetA[n] - 1) < 0.10:
+            if abs(max(a,b) / targetB[n] -1) < 0.10:
+                return n, pointsToTest
+        if level<2:
+            print("trying removing level {0}".format(level))
+            result, testedPoints = validatePoints(level+1,pointsToTest, shape)
+            if result>1:
+                return result, testedPoints
+        index += 1
+        if index == count:
+            count -= 1
+            index = 0
+    return count, pointsToTest
+
+def calculateBoxDimensions(keypoints, shape):
+    box = minAreaBox(keypoints, shape)
+    p0 = box[0]
+    p1 = box[1]
+    p2 = box[3]
+
+    a = math.sqrt( (p0[0]-p1[0])**2 + (p0[1]-p1[1])**2 )
+    b = math.sqrt( (p0[0]-p2[0])**2 + (p0[1]-p2[1])**2 )
+
+    return a,b
+
+def minAreaBox(keypoints,shape):
+    keypointsMask = np.zeros(shape, np.uint8)
+    keypointsMask = cv.drawKeypoints(keypointsMask, keypoints, np.array([]), (255,255,255), cv.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+    keypointsMask = cv.cvtColor(keypointsMask, cv.COLOR_BGR2GRAY)
+    points = cv.findNonZero(keypointsMask)
+    minRect = cv.minAreaRect(points)
+    box = cv.boxPoints(minRect)
+    box = np.int0(box)
+    return box
+
+
 def constrain(val, min_val, max_val):
     return min(max_val, max(min_val, val))
+

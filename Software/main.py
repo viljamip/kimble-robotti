@@ -15,6 +15,7 @@ def main():
 def detectDie(frame, showImages):
     M = fP.findTranform(frame)
     #print(M)
+    cv.imshow("cameraView", frame)
     frame = applyTransform(frame, M)
     cv.normalize(frame, frame, 0, 255, cv.NORM_MINMAX)
     dieNumber = dD.detect(frame) 
