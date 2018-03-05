@@ -35,7 +35,7 @@ def detect(frame):
     threshold = cv.dilate(threshold, kernel, iterations=3)
     threshold = cv.erode(threshold, kernel, iterations=4)
     threshold = cv.dilate(threshold, kernel, iterations=2)
-    #cv.imshow("laplacian", laplacian)
+    cv.imshow("laplacian", laplacian)
     cv.imshow("threshLap", threshold)
     
     treshWcontours, contours0, hierarchy = cv.findContours(threshold, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE) # find contours

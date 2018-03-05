@@ -9,8 +9,8 @@ import argparse
 def main():
     parseArgs()
     frame = cI.captureFrame()
-    dieNumber = detectDie(frame, True)
-    print(dieNumber)
+    #dieNumber = detectDie(frame, True)
+    #print(dieNumber)
     
 def detectDie(frame, showImages):
     M = fP.findTranform(frame)

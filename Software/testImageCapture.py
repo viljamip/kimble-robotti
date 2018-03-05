@@ -2,7 +2,7 @@ import sys
 sys.path.append('/usr/local/Cellar/opencv3/3.2.0/lib/python2.7/site-packages')
 import cv2 as cv
 
-vcap = cv.VideoCapture(1)
+vcap = cv.VideoCapture(1) # Change this to 0 if you only have one camera connected. My laptop's internal camera is 0.
 count = 0
 
 while(1):
