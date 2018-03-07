@@ -1,4 +1,4 @@
-update=2018 March 05, Monday 23:22:34
+update=2018 March 07, Wednesday 17:40:03
 version=1
 last_client=kicad
 [pcbnew]
@@ -202,3 +202,4 @@ LibName170=/Users/viljami/Documents/kicad libraries/digikey-kicad-library/digike
 LibName171=/Users/viljami/Documents/kicad libraries/digikey-kicad-library/digikey-symbols/dk_USB-DVI-HDMI-Connectors
 LibName172=opendous
 LibName173=/Users/viljami/Documents/kicad libraries/TMC2130
+LibName174=/Users/viljami/Documents/kicad libraries/Infineon
