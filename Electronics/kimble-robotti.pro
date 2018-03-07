@@ -1,4 +1,4 @@
-update=2018 March 07, Wednesday 17:40:03
+update=2018 March 07, Wednesday 17:45:07
 version=1
 last_client=kicad
 [pcbnew]
@@ -203,3 +203,13 @@ LibName171=/Users/viljami/Documents/kicad libraries/digikey-kicad-library/digike
 LibName172=opendous
 LibName173=/Users/viljami/Documents/kicad libraries/TMC2130
 LibName174=/Users/viljami/Documents/kicad libraries/Infineon
+[schematic_editor]
+version=1
+PageLayoutDescrFile=
+PlotDirectoryName=
+SubpartIdSeparator=0
+SubpartFirstId=65
+NetFmtName=
+SpiceForceRefPrefix=0
+SpiceUseNetNumbers=0
+LabSize=60
