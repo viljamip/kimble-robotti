@@ -23,7 +23,7 @@ def detect(frame):
     grey = cv.equalizeHist(grey)
     cv.imshow("bilateral", grey)
     cv.imshow("straightened", frame)
-    laplacian = cv.Laplacian(grey,cv.CV_64F, ksize=3, scale=0.6)
+    laplacian = cv.Laplacian(grey,cv.CV_64F, ksize=3, scale=0.5)
     #threshold = cv.erode(laplacian, kernel, iterations=1)
     #threshold = cv.dilate(threshold, kernel, iterations=2)
     laplacian = cv.convertScaleAbs(laplacian)
@@ -77,7 +77,7 @@ def detect(frame):
     minY = height
     maxX = 0
     maxY = 0
-    padding = 80
+    padding = 100
 
     for cent in centroids:
         if cent[0] < minX:
@@ -132,6 +132,8 @@ def detect(frame):
     # Show keypoints
     count, validPoints = validatePoints(0,keypoints, roiDie.shape)
     box = minAreaBox(validPoints, roiDie.shape)
+    if box == None:
+        return 1
     im_with_keypoints = cv.drawKeypoints(roiDie, validPoints, np.array([]), (0,0,255), cv.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
     im_with_keypoints = cv.drawContours(im_with_keypoints,[box],0,(0,255,0),2)
     cv.imshow("Keypoints", im_with_keypoints)
@@ -195,6 +197,8 @@ def minAreaBox(keypoints,shape):
     keypointsMask = cv.drawKeypoints(keypointsMask, keypoints, np.array([]), (255,255,255), cv.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
     keypointsMask = cv.cvtColor(keypointsMask, cv.COLOR_BGR2GRAY)
     points = cv.findNonZero(keypointsMask)
+    if points == None:
+        return None
     minRect = cv.minAreaRect(points)
     box = cv.boxPoints(minRect)
     box = np.int0(box)
