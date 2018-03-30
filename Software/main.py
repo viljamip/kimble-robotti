@@ -46,7 +46,7 @@ def runTests():
 
 def runTest(imageFileName, answer):
     frame = cv.imread(imageFileName)
-    dieNumber = detectDie(frame, False)
+    dieNumber = detectDie(frame, True)
 
     if(dieNumber == answer):
         print("TEST OK: ", imageFileName)
