@@ -108,6 +108,11 @@ def etsiTyhjaPesasta(nappulanVari): #FUNKTIO ON NS VALMIS T:JUHO
     return -1
 
 def putsaaLauta():
+    dfeef
+    efef
+    asd
+    asd
+    asd
     
     return
 
