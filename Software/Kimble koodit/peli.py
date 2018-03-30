@@ -12,13 +12,12 @@ RED = 3
 GREEN = 4
 
 
-
-print(pelitilanne)
         
 def pelaa():
-    i1, i2 = 0
-    hardware.painaNoppaa()
-    hardware.kuvaAsento()
+    i1 = 0
+    i2 = 0
+    #hardware.painaNoppaa()
+    #hardware.kuvaAsento()
     silmaluku = kamera.nopanSilmaluku()
     pelitilanne = kamera.tulkitseLauta() 
     voittaja = onkoVoittajia(pelitilanne)
@@ -29,12 +28,12 @@ def pelaa():
             hardware.siirra(i1, i2)
         if silmaluku == 6:
             pelaa() # Ilmeisesti kutosella saa uuden vuoron vaikka ei siirtaisi mitaan
-    else
+    else:
         putsaaLauta(pelitilanne)
     
     return
 
-def etsiSiirto(): #FUNKTIO ON NS VALMIS T:JUHO
+def etsiSiirto(pelitilanne): #FUNKTIO ON NS VALMIS T:JUHO
     siirrot = []
     siirrettava = -1
     kohde = -1
@@ -99,24 +98,33 @@ def etsiTyhjaPesasta(nappulanVari): #FUNKTIO ON NS VALMIS T:JUHO
 
     if nappulanVari == GREEN:
         for index in vihreaPesa:
-            if pelitilanne[index] == 0:
+            if kamera.pelitilanne[index] == 0:
                 return index
     if nappulanVari == RED:
         for index in punainenPesa:
-            if pelitilanne[index] == 0:
+            if kamera.pelitilanne[index] == 0:
                 return index
     if nappulanVari == YELLOW:
         for index in keltainenPesa:
-            if pelitilanne[index] == 0:
+            if kamera.pelitilanne[index] == 0:
                 return index
     return -1
 
-def putsaaLauta():
-    dfeef
-    efef
-    asd
-    asd
-    asd
+def putsaaLauta(pelitilanne):
+    for paikka in range(31):
+        print(pelitilanne[paikka])
+        if (pelitilanne[paikka] == BLUE):
+            index2 = etsiTyhjaPesasta(BLUE)
+            hardware.siirra(index(pelitilanne[paikka]), index2)
+        if (pelitilanne[paikka] == RED):
+            index2 = etsiTyhjaPesasta(RED)
+            hardware.siirra(index(pelitilanne[paikka]), index2)    
+        if (pelitilanne[paikka] == YELLOW):
+            index2 = etsiTyhjaPesasta(YELLOW)
+            hardware.siirra(index(pelitilanne[paikka]), index2)
+        if (pelitilanne[paikka] == GREEN):
+            index2 = etsiTyhjaPesasta(GREEN)
+            harware.siirra(index(pelitilanne[paikka]), index2)
     
     return
 
@@ -126,4 +134,4 @@ def onkoVoittajia(pelitilanne):
     
     return
 
-etsiSiirto() #vain testiajoa varten. MUISTA POISTAA
+pelaa()
