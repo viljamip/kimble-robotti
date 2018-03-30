@@ -144,7 +144,7 @@ def onkoVoittajia(pelitilanne):
     #punainen voittaa
     if (pelitilanne[48] == 1 and pelitilanne[49] == 1 and pelitilanne[50] == 1 and pelitilanne[51] == 1):
         return 3
-    #vihreä voittaa
+    #vihrea voittaa
     if (pelitilanne[56] == 1 and pelitilanne[57] == 1 and pelitilanne[58] == 1 and pelitilanne[59] == 1):
         return 4
         
