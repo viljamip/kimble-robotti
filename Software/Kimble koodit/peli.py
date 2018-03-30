@@ -129,9 +129,25 @@ def putsaaLauta(pelitilanne):
     return
 
 def onkoVoittajia(pelitilanne):
-    
-    
-    
-    return
+    '''
+    sininenMaali = [28,29,30,31]
+    keltainenMaali = [52,53,54,55] 
+    punainenMaali = [48,49,50,51] 
+    vihreaMaali = [56,57,58,59] 
+    '''
+    #sininen voittaa
+    if (pelitilanne[28] == 1 and pelitilanne[29] == 1 and pelitilanne[30] == 1 and pelitilanne[31] == 1):
+        return 1
+    #keltainen voittaa
+    if (pelitilanne[52] == 1 and pelitilanne[53] == 1 and pelitilanne[54] == 1 and pelitilanne[55] == 1):
+        return 2
+    #punainen voittaa
+    if (pelitilanne[48] == 1 and pelitilanne[49] == 1 and pelitilanne[50] == 1 and pelitilanne[51] == 1):
+        return 3
+    #vihreä voittaa
+    if (pelitilanne[56] == 1 and pelitilanne[57] == 1 and pelitilanne[58] == 1 and pelitilanne[59] == 1):
+        return 4
+        
+    return 0
 
 pelaa()
