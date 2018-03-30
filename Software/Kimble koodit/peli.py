@@ -1,8 +1,8 @@
 import hardware
 import kamera
 
-silmaluku = 4 #testiajoa varten
-pelitilanne = [0] * 60 
+
+
 #0 - 31 "pelikenttaa",32 - 35 OMA koti, 36 - 39 YELLOW koti, 40 - 43 GREEN koti, 44- 47 RED koti
 #48 - 51 RED maali, 52 - 55 YELLOW maali, 56 - 59 GREEN maali
 
@@ -12,14 +12,7 @@ RED = 3
 GREEN = 4
 
 
-#for looppi tayttaa koemielessa pelitilanteeseen parit ykkoset ja kakkoset
-for alkio in range(31):    
-    if (alkio % 5 == 0):
-        pelitilanne[alkio] = 2
-    if (alkio % 6 == 0):
-        pelitilanne[alkio] = 1
-pelitilanne[0] = 0
-pelitilanne[33] = 0
+
 print(pelitilanne)
         
 def pelaa():
@@ -27,7 +20,7 @@ def pelaa():
     hardware.painaNoppaa()
     hardware.kuvaAsento()
     silmaluku = kamera.nopanSilmaluku()
-    pelitilanne[] = kamera.tulkitseLauta() 
+    pelitilanne = kamera.tulkitseLauta() 
     (i1, i2) = etsiSiirto()
     if (i1, i2) != (-1, -1):
         hardware.siirra(i1, i2)
