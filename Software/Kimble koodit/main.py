@@ -1,17 +1,30 @@
 import hardware
+import peli
+import kamera
+
+
+
 
 def main():
+    hardware.openSerial()
     hardware.homing()
+    
+    
     hardware.kuvaAsento()
     kamera.kalibroiPerspektiivi()
-    hardware.valo(true)
+    hardware.valo(True)
     
     while True:
         
-        input("Haluatko jatkaa?")
-        hardware.valo(false)
+        
+        
+        syote = input("Haluatko jatkaa?")
+        if (syote == 'Q'):
+            break
+        
+        hardware.valo(False)
         peli.pelaa()
-        hardware.valo(true)
+        hardware.valo(True)
         '''
         if (nappi == True):
             hardware.valo(false)
@@ -22,3 +35,5 @@ def main():
             #time.sleep(1)    
     
     return
+main()
+hardware.closeSerial()

@@ -2,7 +2,6 @@ import hardware
 import kamera
 
 
-
 #0 - 31 "pelikenttaa",32 - 35 OMA koti, 36 - 39 YELLOW koti, 40 - 43 GREEN koti, 44- 47 RED koti
 #48 - 51 RED maali, 52 - 55 YELLOW maali, 56 - 59 GREEN maali
 
@@ -11,21 +10,20 @@ YELLOW = 2
 RED = 3
 GREEN = 4
 
+global pelitilanne
 pelitilanne = []
-for i in range(60):
-        pelitilanne.append(0)
+global silmaluku
+#for i in range(60):
+ #       pelitilanne.append(0)
 
         
 def pelaa():
     i1 = 0
     i2 = 0
-    hardware.painaNoppaa()
-    hardware.kuvaAsento()
-    silmaluku = kamera.nopanSilmaluku()
-    pelitilanne = kamera.tulkitseLauta() 
-    voittaja = onkoVoittajia(pelitilanne)
-    voittaja = 1
+    tulkittu = hardware.painaNoppaa()
     
+    tulkittu = kamera.tulkitseLauta() 
+    voittaja = onkoVoittajia(pelitilanne)
     if (voittaja == 0):
         (i1, i2) = etsiSiirto()
         if (i1, i2) != (-1, -1):
@@ -38,16 +36,21 @@ def pelaa():
     return
 
 def etsiSiirto(): #FUNKTIO ON NS VALMIS T:JUHO
+    print("etsitaan siirto")
     siirrot = []
     siirrettava = -1
     kohde = -1
-    index1 = -1
     for kolo in pelitilanne:
         if kolo == BLUE:
-            index1 = pelitilanne.index(kolo, index1 + 1)
-            index2 = etsiSiirronLoppupiste(index1)
-            siirrot.append((index1, index2))
+            print("")
+            siirrettava = pelitilanne.index(kolo, siirrettava + 1)
+            kohde = etsiSiirronLoppupiste(siirrettava)
+            print('siirrettava on', siirrettava, 'ja kohde on', kohde )
+            siirrot.append((siirrettava, kohde))
     (siirrettava, kohde) = strategia(siirrot)
+    print(pelitilanne)
+    print(siirrot)
+    print(siirrettava, kohde)
     return(siirrettava, kohde)
 
 def strategia(siirrot): #FUNKTIO ON NS VALMIS T:JUHO
@@ -184,4 +187,4 @@ def onkoVoittajia(pelitilanne):
         
     return 0
 
-pelaa()
+#pelaa()
