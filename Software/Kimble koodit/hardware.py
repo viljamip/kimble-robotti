@@ -17,111 +17,39 @@ def closeSerial():
 
 def homing():
     # Open grbl serial port
-    siirto = '$H\n'
-    string = '$#\n'
+    homing = '$H'
+    wakeupcall = '$#'
     #Wake up grbl
-    s.write(string.encode('utf-8'))
-    time.sleep(2)   # Wait for grbl to initialize 
-    s.flushInput()  # Flush startup text in serial input
-
-    # Stream g-code to grbl
-    
-    print("Sending:", siirto.encode('utf-8'))
-    s.write(siirto.encode()) # Send g-code block to grbl
-    grbl_out = s.readline() # Wait for grbl response with carriage return
-    print(" Vastaus" , grbl_out.strip())
-
-    # Wait here until grbl is finished to close serial port and file.
-    #raw_input("  Press <Enter> to exit and disable grbl.") 
-
-    
+    lahetaGcode(wakeupcall)
+    time.sleep(1)   # Wait for grbl to initialize 
+    lahetaGcode(homing) 
     return
 
 def kuvaAsento():
-    # Open grbl serial port
-    siirto = 'G90 X22 Y-174 Z0\n' #MUUTA NAMA
-    string = '$#\n'
-    #Wake up grbl
-    s.write(string.encode('utf-8'))
-    time.sleep(0.2)   # Wait for grbl to initialize 
-    s.flushInput()  # Flush startup text in serial input
-
-    # Stream g-code to grbl
-    
-    print("Sending:", siirto.encode('utf-8'))
-    s.write(siirto.encode()) # Send g-code block to grbl
-    grbl_out = s.readline() # Wait for grbl response with carriage return
-    print(" Vastaus" , grbl_out.strip())
-
-    # Wait here until grbl is finished to close serial port and file.
-    #raw_input("  Press <Enter> to exit and disable grbl.") 
-
+    asento = 'G90 X22 Y-174 Z0' 
+    lahetaGcode(asento)
     return 1
 
 def peliAsento():
-    # Open grbl serial port
-    siirto = 'G90 X0 Y-174 Z0\n' #MUUTA NAMA
-    string = '$#\n'
-    #Wake up grbl
-    s.write(string.encode('utf-8'))
-    time.sleep(2)   # Wait for grbl to initialize 
-    s.flushInput()  # Flush startup text in serial input
-
-    # Stream g-code to grbl
-    
-    print("Sending:", siirto.encode('utf-8'))
-    s.write(siirto.encode()) # Send g-code block to grbl
-    grbl_out = s.readline() # Wait for grbl response with carriage return
-    print(" Vastaus" , grbl_out.strip())
-
-    # Wait here until grbl is finished to close serial port and file.
-    #raw_input("  Press <Enter> to exit and disable grbl.") 
-
-    
+    asento = 'G90 X0 Y-174 Z0' #MUUTA NAMA
+    lahetaGcode(asento)
     return
 
 def painaNoppaa():
-    # Open grbl serial port
-
-    string = '$#\n'
-    #Wake up grbl
-    s.write(string.encode('utf-8'))
-    time.sleep(0.2)   # Wait for grbl to initialize 
-    s.flushInput()  # Flush startup text in serial input
 
     # Ajetaan nopan paalle
-    siirto = 'G90 Y0 Z-1\n' #MUUTA NAMA    
-    print("Sending:", siirto.encode('utf-8'))
-    s.write(siirto.encode()) # Send g-code block to grbl
-    s.flushInput()
-    time.sleep(0.2)   # Wait for grbl to initialize 
-    grbl_out = s.readline() # Wait for grbl response with carriage return
-    print(" Vastaus" , grbl_out.strip())
+    siirto = 'G90 Y0 Z-1'
+    lahetaGcode(siirto)  
     
     #painetaan noppaa
-    siirto = 'G90  Z-27\n'
-    print("Sending:", siirto.encode('utf-8'))
-    s.write(siirto.encode()) # Send g-code block to grbl
-    s.flushInput()
-    time.sleep(0.2)   # Wait for grbl to initialize 
-    grbl_out = s.readline() # Wait for grbl response with carriage return
-    print(" Vastaus" , grbl_out.strip())
-    siirto = 'G90  Z-1\n'
-    print("Sending:", siirto.encode('utf-8'))
-    s.write(siirto.encode()) # Send g-code block to grbl
-    s.flushInput()
-    time.sleep(0.2)   # Wait for grbl to initialize 
-    grbl_out = s.readline() # Wait for grbl response with carriage return
-    print(" Vastaus" , grbl_out.strip())
+    siirto = 'G90  Z-27'
+    lahetaGcode(siirto)
+    siirto = 'G90  Z-1'
+    lahetaGcode(siirto)
     
     #ajetaan takaisin sivuun
-    siirto = 'G90 Y-174 Z-1\n' #MUUTA NAMA    
-    print("Sending:", siirto.encode('utf-8'))
-    s.write(siirto.encode()) # Send g-code block to grbl
-    s.flushInput()
-    time.sleep(0.2)   # Wait for grbl to initialize 
-    grbl_out = s.readline() # Wait for grbl response with carriage return
-    print(" Vastaus" , grbl_out.strip())
+    siirto = 'G90 Y-174 Z-1' #MUUTA NAMA    
+    lahetaGcode(siirto)
     
     silmaluku = kamera.nopanSilmaluku()
     return silmaluku
@@ -139,63 +67,31 @@ def siirra(i1,i2):
     xLoppu = koordinaatit[i2][0]
     yLoppu = koordinaatit[i2][1] 
 
-    #'{1} {0}'.format('one', 'two')
+    zYlos = 'G90 Z-1'
+    lahetaGcode(zYlos)
 
-    #Wake up grbl
-    #s.write(("\r\n\r\n").encode())
-    #time.sleep(2)   # Wait for grbl to initialize 
-    #s.flushInput()  # Flush startup text in serial input
-    zYlos = 'G90 Z-1\n'
-    s.write(zYlos.encode('utf-8'))
-    grbl_out = s.readline() # Wait for grbl response with carriage return
-    # Stream g-code to grbl
-    nappaa = 'G90 X{} Y{}\n'.format(xAlku, yAlku)
-    laske  = 'G90 X{} Y{}\n'.format(xLoppu, yLoppu)
+    nappaa = 'G90 X{} Y{}'.format(xAlku, yAlku)
+    laske  = 'G90 X{} Y{}'.format(xLoppu, yLoppu)
     
     #Haetaan nappi
-    print('Sending:', nappaa)
-    s.write(nappaa.encode('utf-8')) # Send g-code block to grbl
-    grbl_out = s.readline() # Wait for grbl response with carriage return
-    print(" : ", grbl_out.strip())
-    s.write('G90 Z-32\n'.encode('utf-8'))
-    grbl_out = s.readline() # Wait for grbl response with carriage return
-    print(" : ", grbl_out.strip())
-    s.write('M8\n'.encode('utf-8'))
-    grbl_out = s.readline()
-    print(" : ", grbl_out.strip())
-    s.write('G90 Z-1\n'.encode('utf-8'))
-    grbl_out = s.readline() # Wait for grbl response with carriage return
-    print(" : ", grbl_out.strip())
+    lahetaGcode(nappaa)
+    lahetaGcode('G90 Z-32')
+    lahetaGcode('M8')
+    lahetaGcode('G90 Z-1')
     
     #pudotetaan nappi
-    print('Sending:', laske)
-    s.write(laske.encode('utf-8')) # Send g-code block to grbl
-    grbl_out = s.readline() # Wait for grbl response with carriage return
-    s.write('G90 Z-32\n'.encode('utf-8'))
-    grbl_out = s.readline() # Wait for grbl response with carriage return
-    print(" : ", grbl_out.strip())
-    s.write('M9\n'.encode('utf-8'))
-    grbl_out = s.readline()
-    print(" : ", grbl_out.strip())
-    s.write('G90 Z-1\n'.encode('utf-8'))
-    grbl_out = s.readline() # Wait for grbl response with carriage return
-    print(" : ", grbl_out.strip())
-
-    # Wait here until grbl is finished to close serial port and file.
-    #raw_input("  Press <Enter> to exit and disable grbl.") 
-
+    lahetaGcode(laske)
+    lahetaGcode('G90 Z-32')
+    lahetaGcode('M9')
+    lahetaGcode('G90 Z-1')
+    
     return
  
 def valo(paalla):
     if paalla:
-            s.write('M3 S1000\n'.encode('utf-8'))
-            grbl_out = s.readline() # Wait for grbl response with carriage return
-            print(" : ", grbl_out.strip())
-    
+            lahetaGcode('M3 S1000')
     else:
-            s.write('M5\n'.encode('utf-8'))
-            grbl_out = s.readline() # Wait for grbl response with carriage return
-            print(" : ", grbl_out.strip())
+            lahetaGcode('M5')
     return
 
 #openSerial()
