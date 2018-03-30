@@ -12,6 +12,8 @@ RED = 3
 GREEN = 4
 
 pelitilanne = []
+for i in range(60):
+        pelitilanne.append(0)
 
         
 def pelaa():
@@ -20,8 +22,9 @@ def pelaa():
     #hardware.painaNoppaa()
     #hardware.kuvaAsento()
     silmaluku = kamera.nopanSilmaluku()
-    pelitilanne = kamera.tulkitseLauta(pelitilanne) 
+    pelitilanne = kamera.tulkitseLauta() 
     voittaja = onkoVoittajia(pelitilanne)
+    voittaja = 1
     
     if (voittaja == 0):
         (i1, i2) = etsiSiirto()
@@ -34,7 +37,7 @@ def pelaa():
     
     return
 
-def etsiSiirto(pelitilanne): #FUNKTIO ON NS VALMIS T:JUHO
+def etsiSiirto(): #FUNKTIO ON NS VALMIS T:JUHO
     siirrot = []
     siirrettava = -1
     kohde = -1
@@ -116,16 +119,30 @@ def putsaaLauta(pelitilanne):
         print(pelitilanne[paikka])
         if (pelitilanne[paikka] == BLUE):
             index2 = etsiTyhjaPesasta(BLUE)
-            hardware.siirra(index(pelitilanne[paikka]), index2)
+            hardware.siirra(paikka, index2)
         if (pelitilanne[paikka] == RED):
             index2 = etsiTyhjaPesasta(RED)
-            hardware.siirra(index(pelitilanne[paikka]), index2)    
+            hardware.siirra(paikka, index2)    
         if (pelitilanne[paikka] == YELLOW):
             index2 = etsiTyhjaPesasta(YELLOW)
-            hardware.siirra(index(pelitilanne[paikka]), index2)
+            hardware.siirra(paikka, index2)
         if (pelitilanne[paikka] == GREEN):
             index2 = etsiTyhjaPesasta(GREEN)
-            harware.siirra(index(pelitilanne[paikka]), index2)
+            hardware.siirra(paikka, index2)
+    for paikka in range(48, 60):
+        print(pelitilanne[paikka])
+        if (pelitilanne[paikka] == BLUE):
+            index2 = etsiTyhjaPesasta(BLUE)
+            hardware.siirra(paikka, index2)
+        if (pelitilanne[paikka] == RED):
+            index2 = etsiTyhjaPesasta(RED)
+            hardware.siirra(paikka, index2)    
+        if (pelitilanne[paikka] == YELLOW):
+            index2 = etsiTyhjaPesasta(YELLOW)
+            hardware.siirra(paikka, index2)
+        if (pelitilanne[paikka] == GREEN):
+            index2 = etsiTyhjaPesasta(GREEN)
+            hardware.siirra(paikka, index2)
     
     return
 

@@ -1,4 +1,4 @@
-import peli
+#import peli
 
 def kalibroiPerspektiivi():
     
@@ -9,7 +9,7 @@ def nopanSilmaluku():
     silmaluku = 4 #testiajoa varten
     return silmaluku
 
-def tulkitseLauta(pelitilanne):
+def tulkitseLauta():
     pelitilanne = [0] * 60 
     #for looppi tayttaa koemielessa pelitilanteeseen parit ykkoset ja kakkoset
     for alkio in range(31):    
@@ -19,5 +19,6 @@ def tulkitseLauta(pelitilanne):
                 pelitilanne[alkio] = 1
     pelitilanne[0] = 0
     pelitilanne[33] = 0
+    return pelitilanne
     
     return pelitilanne
