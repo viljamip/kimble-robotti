@@ -21,12 +21,16 @@ def pelaa():
     hardware.kuvaAsento()
     silmaluku = kamera.nopanSilmaluku()
     pelitilanne = kamera.tulkitseLauta() 
-    (i1, i2) = etsiSiirto()
-    if (i1, i2) != (-1, -1):
-        hardware.siirra(i1, i2)
-    if silmaluku == 6:
-        pelaa() # Ilmeisesti kutosella saa uuden vuoron vaikka ei siirtaisi mitaan
-
+    voittaja = onkoVoittajia(pelitilanne)
+    
+    if (voittaja == 0):
+        (i1, i2) = etsiSiirto()
+        if (i1, i2) != (-1, -1):
+            hardware.siirra(i1, i2)
+        if silmaluku == 6:
+            pelaa() # Ilmeisesti kutosella saa uuden vuoron vaikka ei siirtaisi mitaan
+    else
+        putsaaLauta(pelitilanne)
     
     return
 
@@ -116,8 +120,10 @@ def putsaaLauta():
     
     return
 
-def onkoVoittajia():
-    jaajaa
+def onkoVoittajia(pelitilanne):
+    
+    
+    
     return
 
 etsiSiirto() #vain testiajoa varten. MUISTA POISTAA
