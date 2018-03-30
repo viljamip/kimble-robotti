@@ -89,7 +89,7 @@ def painaNoppaa():
     time.sleep(2)   # Wait for grbl to initialize 
     s.flushInput()  # Flush startup text in serial input
 
-    # Ajetaan nopan p‰‰lle
+    # Ajetaan nopan paalle
     siirto = 'G90 Y0 Z-1\n' #MUUTA NAMA    
     print("Sending:", siirto.encode('utf-8'))
     s.write(siirto.encode()) # Send g-code block to grbl
@@ -98,7 +98,21 @@ def painaNoppaa():
     print(" Vastaus" , grbl_out.strip())
     
     #painetaan noppaa
-    siirto = 'G90  Z-26\n'
+    siirto = 'G90  Z-27\n'
+    print("Sending:", siirto.encode('utf-8'))
+    s.write(siirto.encode()) # Send g-code block to grbl
+    s.flushInput()
+    grbl_out = s.readline() # Wait for grbl response with carriage return
+    print(" Vastaus" , grbl_out.strip())
+    siirto = 'G90  Z-1\n'
+    print("Sending:", siirto.encode('utf-8'))
+    s.write(siirto.encode()) # Send g-code block to grbl
+    s.flushInput()
+    grbl_out = s.readline() # Wait for grbl response with carriage return
+    print(" Vastaus" , grbl_out.strip())
+    
+    #ajetaan takaisin sivuun
+    siirto = 'G90 Y-174 Z-1\n' #MUUTA NAMA    
     print("Sending:", siirto.encode('utf-8'))
     s.write(siirto.encode()) # Send g-code block to grbl
     s.flushInput()
@@ -162,5 +176,6 @@ def siirra(i1,i2):
  
 openSerial()
 homing()
-siirra(0,9)
+painaNoppaa()
+siirra(31, 49)
 closeSerial()
