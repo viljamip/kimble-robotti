@@ -11,6 +11,7 @@ YELLOW = 2
 RED = 3
 GREEN = 4
 
+pelitilanne = []
 
         
 def pelaa():
@@ -19,7 +20,7 @@ def pelaa():
     #hardware.painaNoppaa()
     #hardware.kuvaAsento()
     silmaluku = kamera.nopanSilmaluku()
-    pelitilanne = kamera.tulkitseLauta() 
+    pelitilanne = kamera.tulkitseLauta(pelitilanne) 
     voittaja = onkoVoittajia(pelitilanne)
     
     if (voittaja == 0):
@@ -98,15 +99,15 @@ def etsiTyhjaPesasta(nappulanVari): #FUNKTIO ON NS VALMIS T:JUHO
 
     if nappulanVari == GREEN:
         for index in vihreaPesa:
-            if kamera.pelitilanne[index] == 0:
+            if pelitilanne[index] == 0:
                 return index
     if nappulanVari == RED:
         for index in punainenPesa:
-            if kamera.pelitilanne[index] == 0:
+            if pelitilanne[index] == 0:
                 return index
     if nappulanVari == YELLOW:
         for index in keltainenPesa:
-            if kamera.pelitilanne[index] == 0:
+            if pelitilanne[index] == 0:
                 return index
     return -1
 
@@ -144,7 +145,7 @@ def onkoVoittajia(pelitilanne):
     #punainen voittaa
     if (pelitilanne[48] == 1 and pelitilanne[49] == 1 and pelitilanne[50] == 1 and pelitilanne[51] == 1):
         return 3
-    #vihreä voittaa
+    #vihrea voittaa
     if (pelitilanne[56] == 1 and pelitilanne[57] == 1 and pelitilanne[58] == 1 and pelitilanne[59] == 1):
         return 4
         
