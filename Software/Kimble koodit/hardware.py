@@ -36,6 +36,7 @@ def peliAsento():
     return
 
 def painaNoppaa():
+    odotaPysahtymista()
 
     # Ajetaan nopan paalle
     siirto = 'G90 Y0 Z-1'
@@ -59,6 +60,22 @@ def lahetaGcode(koodi):
     s.flushInput()
     grbl_out = s.readline()
     print(" Vastaus" , grbl_out.strip())
+    
+def odotaPysahtymista():
+    valmis = False
+    count = 0
+    while(not valmis):
+        time.sleep(0.1)
+        s.write('?'.encode('utf-8'))
+        s.flushInput()
+        grbl_out = s.readline()
+        valmis = "Idle" in str(grbl_out)
+        if not valmis:
+            count = count + 1
+    print('odotuksen wait-määrä {0}'.format(count))
+    if count>0:
+        time.sleep(0.2)
+
 
 def siirra(i1,i2):
     print(koordinaatit[i1][0])

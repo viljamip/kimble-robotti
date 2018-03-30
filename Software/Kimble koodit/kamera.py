@@ -11,11 +11,10 @@ import time
 
 global vcap
 vcap = cv.VideoCapture(0) # Numero 0 jos vain 1 kamera kiinni
-M = 0
 
 def kalibroiPerspektiivi():
     ret = hardware.kuvaAsento()
-    time.sleep(2)
+    hardware.odotaPysahtymista()
     ret, frame = vcap.read()
     if not ret:
         print("Kameran kanssa oli ongelma.")
@@ -24,10 +23,16 @@ def kalibroiPerspektiivi():
     #cv.waitKey(0)
     global M
     M = fP.findTranform(frame)
+    print("M:" + str(M))
+    frame = applyTransform(frame, M)
+    cv.imshow("kalibrointi", frame)
+    cv.waitKey(0)
+    
     return 1
     
 def otaKuva():
     ret = hardware.kuvaAsento()
+    time.sleep(2)
     ret, frame = vcap.read()
     if not ret:
         print("Kameran kanssa oli ongelma.")
@@ -39,15 +44,20 @@ def otaKuva():
         print("Aja ensin kalibroiPerspektiivi()")
         return None
         
+    print("M otaKuva:" + str(M))
     frame = applyTransform(frame, M)
+    cv.imshow("kuva", frame)
+    cv.waitKey(0)
     return frame
 
 def nopanSilmaluku():
+    hardware.odotaPysahtymista()
     frame = otaKuva()
     peli.silmaluku = dD.detect(frame)
     return 1
 
 def tulkitseLauta():
+    hardware.odotaPysahtymista()
     frame = otaKuva()
     ret = tL.tulkitse(frame)
     return 1

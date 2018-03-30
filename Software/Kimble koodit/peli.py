@@ -21,8 +21,11 @@ def pelaa():
     i1 = 0
     i2 = 0
     tulkittu = hardware.painaNoppaa()
-    
+    print("Nopan silmäluku: {0}".format(silmaluku))
+    hardware.odotaPysahtymista()
     tulkittu = kamera.tulkitseLauta() 
+    hardware.odotaPysahtymista()
+    
     voittaja = onkoVoittajia(pelitilanne)
     if (voittaja == 0):
         (i1, i2) = etsiSiirto()
