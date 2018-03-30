@@ -1,9 +1,10 @@
 import hardware
+import kamera
 
 silmaluku = 4 #testiajoa varten
 pelitilanne = [0] * 60 
 #0 - 31 "pelikenttaa",32 - 35 OMA koti, 36 - 39 YELLOW koti, 40 - 43 GREEN koti, 44- 47 RED koti
-#48 - 51 YELLOW maali, 52 - 55 GREEN maali, 56 - 59 RED maali
+#48 - 51 RED maali, 52 - 55 YELLOW maali, 56 - 59 GREEN maali
 
 BLUE = 1
 YELLOW = 2
@@ -25,8 +26,8 @@ def pelaa():
     i1, i2 = 0
     hardware.painaNoppaa()
     hardware.kuvaAsento()
-    #silmaluku = kamera.nopanSilmaluku()
-    #pelitilanne[int] = kamera.tulkitseLauta() 
+    silmaluku = kamera.nopanSilmaluku()
+    pelitilanne[] = kamera.tulkitseLauta() 
     (i1, i2) = etsiSiirto()
     if (i1, i2) != (-1, -1):
         hardware.siirra(i1, i2)
