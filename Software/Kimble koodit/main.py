@@ -9,14 +9,11 @@ def main():
     hardware.openSerial()
     hardware.homing()
     
-    
     hardware.kuvaAsento()
     kamera.kalibroiPerspektiivi()
     hardware.valo(True)
     
     while True:
-        
-        
         
         syote = input("Haluatko jatkaa?")
         if (syote == 'Q'):

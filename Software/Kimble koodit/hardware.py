@@ -8,7 +8,7 @@ koordinaatit = [(-3.12,-139.7),(-9.08,-139.4),(-15.4,-135.2),(-21.88,-132.0),(-2
 
 def openSerial():
     global s
-    s = serial.Serial("COM9",115200) #/dev/cu.usbserial-DN03VXG 
+    s = serial.Serial("/dev/cu.usbserial-DN03VXGO",115200) #/dev/cu.usbserial-DN03VXGO 
     return 1
 
 def closeSerial():
@@ -39,11 +39,11 @@ def homing():
 
 def kuvaAsento():
     # Open grbl serial port
-    siirto = 'G90 X0 Y-174 Z0\n' #MUUTA NAMA
+    siirto = 'G90 X22 Y-174 Z0\n' #MUUTA NAMA
     string = '$#\n'
     #Wake up grbl
     s.write(string.encode('utf-8'))
-    time.sleep(2)   # Wait for grbl to initialize 
+    time.sleep(0.2)   # Wait for grbl to initialize 
     s.flushInput()  # Flush startup text in serial input
 
     # Stream g-code to grbl
@@ -56,9 +56,7 @@ def kuvaAsento():
     # Wait here until grbl is finished to close serial port and file.
     #raw_input("  Press <Enter> to exit and disable grbl.") 
 
-
-    
-    return
+    return 1
 
 def peliAsento():
     # Open grbl serial port
@@ -88,7 +86,7 @@ def painaNoppaa():
     string = '$#\n'
     #Wake up grbl
     s.write(string.encode('utf-8'))
-    time.sleep(2)   # Wait for grbl to initialize 
+    time.sleep(0.2)   # Wait for grbl to initialize 
     s.flushInput()  # Flush startup text in serial input
 
     # Ajetaan nopan paalle
@@ -96,6 +94,7 @@ def painaNoppaa():
     print("Sending:", siirto.encode('utf-8'))
     s.write(siirto.encode()) # Send g-code block to grbl
     s.flushInput()
+    time.sleep(0.2)   # Wait for grbl to initialize 
     grbl_out = s.readline() # Wait for grbl response with carriage return
     print(" Vastaus" , grbl_out.strip())
     
@@ -104,12 +103,14 @@ def painaNoppaa():
     print("Sending:", siirto.encode('utf-8'))
     s.write(siirto.encode()) # Send g-code block to grbl
     s.flushInput()
+    time.sleep(0.2)   # Wait for grbl to initialize 
     grbl_out = s.readline() # Wait for grbl response with carriage return
     print(" Vastaus" , grbl_out.strip())
     siirto = 'G90  Z-1\n'
     print("Sending:", siirto.encode('utf-8'))
     s.write(siirto.encode()) # Send g-code block to grbl
     s.flushInput()
+    time.sleep(0.2)   # Wait for grbl to initialize 
     grbl_out = s.readline() # Wait for grbl response with carriage return
     print(" Vastaus" , grbl_out.strip())
     
@@ -118,12 +119,18 @@ def painaNoppaa():
     print("Sending:", siirto.encode('utf-8'))
     s.write(siirto.encode()) # Send g-code block to grbl
     s.flushInput()
+    time.sleep(0.2)   # Wait for grbl to initialize 
     grbl_out = s.readline() # Wait for grbl response with carriage return
     print(" Vastaus" , grbl_out.strip())
     
     silmaluku = kamera.nopanSilmaluku()
     return silmaluku
 
+def lahetaGcode(koodi):
+    s.write('{0}\n'.format(koodi).encode('utf-8'))
+    s.flushInput()
+    grbl_out = s.readline()
+    print(" Vastaus" , grbl_out.strip())
 
 def siirra(i1,i2):
     print(koordinaatit[i1][0])

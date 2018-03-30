@@ -1,6 +1,7 @@
 import cv2 as cv
 import numpy as np
 import math
+import peli
 
 BLUE = 1
 YELLOW = 2
@@ -59,8 +60,5 @@ def tulkitse(frame):
 			tunnistettuVari = 0
 		pelitilanne.append(tunnistettuVari)
 		
-	return pelitilanne
-	
-	cv.imshow("final", frame)
-	print(pelitilanne)
-	cv.waitKey(0)
+	peli.pelitilanne = pelitilanne
+	return 1

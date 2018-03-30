@@ -1,33 +1,33 @@
-import peli
-<<<<<<< Updated upstream
-=======
 import cv2 as cv
 import numpy as np
 import math
 import detectDie as dD
 import findPerspective as fP
-import tulkitseLauta
+import tulkitseLauta as tL
 import hardware
 import peli
+import time
 
-vcap = cv.VideoCapture(1)
+
 global vcap
-global M
->>>>>>> Stashed changes
+vcap = cv.VideoCapture(0) # Numero 0 jos vain 1 kamera kiinni
+M = 0
 
 def kalibroiPerspektiivi():
-    vcap = cv.VideoCapture(1) # Numero 0 jos vain 1 kamera kiinni
-    hardware.kuvaAsento()
+    ret = hardware.kuvaAsento()
+    time.sleep(2)
     ret, frame = vcap.read()
     if not ret:
         print("Kameran kanssa oli ongelma.")
         return -1
-        
+    #cv.imshow("kuva", frame)
+    #cv.waitKey(0)
+    global M
     M = fP.findTranform(frame)
     return 1
     
 def otaKuva():
-    hardware.kuvaAsento()
+    ret = hardware.kuvaAsento()
     ret, frame = vcap.read()
     if not ret:
         print("Kameran kanssa oli ongelma.")
@@ -43,35 +43,14 @@ def otaKuva():
     return frame
 
 def nopanSilmaluku():
-<<<<<<< Updated upstream
-    peli.silmaluku = 6 #testiajoa varten
-    return 1
-
-def tulkitseLauta():
-    peli.pelitilanne = [0] * 60 
-    #for looppi tayttaa koemielessa pelitilanteeseen parit ykkoset ja kakkoset
-    #for alkio in range(31):    
-     #   if (alkio % 5 == 0):
-      #      pelitilanne[alkio] = 2
-       #     if (alkio % 6 == 0):
-        #        pelitilanne[alkio] = 1
-    peli.pelitilanne[0] = 1
-    peli.pelitilanne[1] = 1
-    peli.pelitilanne[4] = 3
-    peli.pelitilanne[44] = 3
-    peli.pelitilanne[32] =  1
-    #peli.pelitilanne[57] =  4
-    #peli.pelitilanne[58] =  4
-    #peli.pelitilanne[59] =  4
-    print("kameran palauttama pelitilanne", peli.pelitilanne)
-    return 1
-=======
     frame = otaKuva()
     peli.silmaluku = dD.detect(frame)
     return 1
 
 def tulkitseLauta():
     frame = otaKuva()
-    peli.pelitilanne = tulkitseLauta.tulkitse(frame)
+    ret = tL.tulkitse(frame)
     return 1
->>>>>>> Stashed changes
+    
+def applyTransform(frame, M):
+    return cv.warpPerspective(frame, M, (800,800))

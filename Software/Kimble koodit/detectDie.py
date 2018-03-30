@@ -1,6 +1,8 @@
 import cv2 as cv
 import numpy as np
 import math
+import peli
+
 MIN_AREA =  100 
 MAX_AREA = 330
 MAX_CIRCULARITY_DEVIATION = 0.19
@@ -148,6 +150,8 @@ def detect(frame):
     if count == 0: # Jos mukaan on tarttunut enemmänkin pisteitä, ei anneta ainakaan yli 6
         count = 1
 
+    peli.silmaluku = count
+    print("Silmaluku (dD): " + count)
     return count
 
 def validatePoints(level,keypoints, shape):
