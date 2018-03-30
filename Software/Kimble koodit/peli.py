@@ -112,7 +112,7 @@ def putsaaLauta():
     return
 
 def onkoVoittajia():
-    
+    jaajaa
     return
 
 etsiSiirto() #vain testiajoa varten. MUISTA POISTAA
