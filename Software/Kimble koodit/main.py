@@ -7,7 +7,7 @@ def main():
     hardware.valo(true)
     
     while True:
-        if nappi == True:
+        if (nappi == True):
             hardware.valo(false)
             peli.pelaa()
             hardware.valo(true)
