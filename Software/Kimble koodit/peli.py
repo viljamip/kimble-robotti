@@ -107,5 +107,12 @@ def etsiTyhjaPesasta(nappulanVari): #FUNKTIO ON NS VALMIS T:JUHO
                 return index
     return -1
 
+def putsaaLauta():
+    
+    return
+
+def onkoVoittajia():
+    
+    return
 
 etsiSiirto() #vain testiajoa varten. MUISTA POISTAA
