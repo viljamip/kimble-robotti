@@ -4,7 +4,7 @@ import math
 import detectDie as dD
 import findPerspective as fP
 
-refImage = cv.imread('kimble2.jpg')
+refImage = cv.imread('kimble3.jpg')
 cv.normalize(refImage, refImage, 0, 255, cv.NORM_MINMAX)
 M = fP.findTranform(refImage)
 frame = cv.warpPerspective(refImage, M, (800,800))
@@ -27,11 +27,11 @@ nappulakolot = [(143, 603), (103, 543), (93, 467), (91, 395), (90, 322), (103, 2
 
 pelitilanne = []
 
-hueBracket = [(0,0, None), (100,120, BLUE), (0,10, RED), (170,180, RED), (70,90,GREEN), (11,30,YELLOW)]
-saturationBracket = [(0,0, None), (230,255, BLUE), (170,220, RED), (175,200,GREEN),(150,200,YELLOW)]
-valueBracket = [(0,0,0), (165,210, BLUE), (170,220, RED), (100,160,GREEN),(180,240,YELLOW)]
+hueBracket = [(90,120, BLUE), (0,10, RED), (170,180, RED), (65,90,GREEN), (11,30,YELLOW)]
+saturationBracket = [(0,0, None), (190,255, BLUE), (170,255, RED), (20,230,GREEN),(150,255,YELLOW)]
+valueBracket = [(0,0,0), (125,255, BLUE), (160,255, RED), (100,210,GREEN),(180,255,YELLOW)]
 
-maxVarianssi = 12
+maxVarianssi = 60
 
 for kolo in nappulakolot:
 	roi = frame[kolo[1]-10:kolo[1]+10, kolo[0]-10:kolo[0]+10]
@@ -39,29 +39,38 @@ for kolo in nappulakolot:
 	meanColor = np.uint8([[[int(mean[0][0]),int(mean[1][0]),int(mean[2][0]) ]]])
 
 	hsvMean = cv.cvtColor(meanColor, cv.COLOR_BGR2HSV)
+	hue = hsvMean[0][0][0]
+	saturation = hsvMean[0][0][1]
+	value = hsvMean[0][0][2]
+	
 	varianssi = math.sqrt(stdDev[0]**2 + stdDev[1]**2 + stdDev[2]**2)
 	
 	tunnistettuVari = 0
 	kaikkiKriteeritTasmaa = False
 	
 	if varianssi < maxVarianssi:
-		for vari in hueBracket:
-			if hsvMean[0][0][0] >= vari[0] and hsvMean[0][0][0] <= vari[1]:
-				tunnistettuVari = vari[2]
+		print("varianssi ok")
+		for refHue in hueBracket:
+			if hue >= refHue[0] and hue <= refHue[1]:
+				tunnistettuVari = refHue[2]
 				kaikkiKriteeritTasmaa = True
+				print("  ok hue: " + str(tunnistettuVari))
 				break
 				
 		if kaikkiKriteeritTasmaa:
-			for saturation in saturationBracket:
-				if saturation[2] == tunnistettuVari:
-					if hsvMean[0][0][1] >= saturation[0] and hsvMean[0][0][1] <= saturation[1]:
+			for refSaturation in saturationBracket:
+				if refSaturation[2] == tunnistettuVari:
+					if saturation >= refSaturation[0] and saturation <= refSaturation[1]:
+						print("  ok saturation")
 						break
 					else:
+						print(" sat not ok")
 						kaikkiKriteeritTasmaa = False
 		if kaikkiKriteeritTasmaa:
-			for value in valueBracket:
-				if value[2] == tunnistettuVari:
-					if hsvMean[0][0][2] >= value[0] and hsvMean[0][0][2] <= value[1]:
+			for refValue in valueBracket:
+				if refValue[2] == tunnistettuVari:
+					if value >= refValue[0] and value <= refValue[1]:
+						print("  ok value")
 						break
 					else:
 						kaikkiKriteeritTasmaa = False
@@ -73,8 +82,8 @@ for kolo in nappulakolot:
 	#print(tunnistettuVari)
 	
 	#print("mean " + str(mean) + " stdDev " + str(stdDev))
-	print(str(nappulakolot.index(kolo)) + " Väri: " + str(tunnistettuVari) + " varianssi: " + str(varianssi) + " meanHSV: " + str(hsvMean))
-	#cv.rectangle(frame, (kolo[0]-10, kolo[1]-10), (kolo[0]+10, kolo[1]+10), (128,128,128),2)
+	print(str(nappulakolot.index(kolo)) + " Väri: " + str(tunnistettuVari) + " varianssi: " + str(varianssi) + " H: " + str(hue)+ " S: " + str(saturation) + " V: " + str(value))
+	cv.rectangle(frame, (kolo[0]-10, kolo[1]-10), (kolo[0]+10, kolo[1]+10), (128,128,128),2)
 	
 	if pelitilanne[nappulakolot.index(kolo)] == BLUE:
 		cv.circle(frame, kolo, 10, (255,100,100),2)
