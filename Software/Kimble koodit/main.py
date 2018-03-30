@@ -11,6 +11,8 @@ def main():
             hardware.valo(false)
             peli.pelaa()
             hardware.valo(true)
-    
+            
+            #Mahdollinen odotus looppiin, ehkä tarpeeton. Aika ilmeisesti sekunteina.
+            #time.sleep(1)    
     
     return
