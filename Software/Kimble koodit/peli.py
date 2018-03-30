@@ -154,17 +154,17 @@ def onkoVoittajia(pelitilanne):
     vihreaMaali = [56,57,58,59] 
     '''
     #sininen voittaa
-    if (pelitilanne[28] == 1 and pelitilanne[29] == 1 and pelitilanne[30] == 1 and pelitilanne[31] == 1):
-        return 1
+    if (pelitilanne[28] == BLUE and pelitilanne[29] == BLUE and pelitilanne[30] == BLUE and pelitilanne[31] == BLUE):
+        return BLUE
     #keltainen voittaa
-    if (pelitilanne[52] == 1 and pelitilanne[53] == 1 and pelitilanne[54] == 1 and pelitilanne[55] == 1):
-        return 2
+    if (pelitilanne[52] == YELLOW and pelitilanne[53] == YELLOW and pelitilanne[54] == YELLOW and pelitilanne[55] == YELLOW):
+        return YELLOW
     #punainen voittaa
-    if (pelitilanne[48] == 1 and pelitilanne[49] == 1 and pelitilanne[50] == 1 and pelitilanne[51] == 1):
-        return 3
+    if (pelitilanne[48] == RED and pelitilanne[49] == RED and pelitilanne[50] == RED and pelitilanne[51] == RED):
+        return RED
     #vihrea voittaa
-    if (pelitilanne[56] == 1 and pelitilanne[57] == 1 and pelitilanne[58] == 1 and pelitilanne[59] == 1):
-        return 4
+    if (pelitilanne[56] == GREEN and pelitilanne[57] == GREEN and pelitilanne[58] == GREEN and pelitilanne[59] == GREEN):
+        return GREEN
         
     return 0
 
