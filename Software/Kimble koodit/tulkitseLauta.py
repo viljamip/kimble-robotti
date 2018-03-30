@@ -19,6 +19,7 @@ valueBracket = [(0,0,0), (125,255, BLUE), (160,255, RED), (100,210,GREEN),(180,2
 maxVarianssi = 60
 
 def tulkitse(frame):
+	pelitilanne = []
 	for kolo in nappulakolot:
 		roi = frame[kolo[1]-10:kolo[1]+10, kolo[0]-10:kolo[0]+10]
 		mean, stdDev = cv.meanStdDev(roi)

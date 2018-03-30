@@ -2,6 +2,7 @@ import cv2 as cv
 import numpy as np
 import math
 import peli
+import random
 
 MIN_AREA =  100 
 MAX_AREA = 330
@@ -151,7 +152,7 @@ def detect(frame):
         count = 1
 
     peli.silmaluku = count
-    print("Silmaluku (dD): " + count)
+    print("Silmaluku (dD): {0}".format(count))
     return count
 
 def validatePoints(level,keypoints, shape):

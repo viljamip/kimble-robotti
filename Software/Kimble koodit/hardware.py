@@ -74,7 +74,7 @@ def odotaPysahtymista():
             count = count + 1
     print('odotuksen wait-määrä {0}'.format(count))
     if count>0:
-        time.sleep(0.2)
+        time.sleep(1)
 
 
 def siirra(i1,i2):

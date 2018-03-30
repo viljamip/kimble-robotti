@@ -41,15 +41,22 @@ def pelaa():
 def etsiSiirto(): #FUNKTIO ON NS VALMIS T:JUHO
     print("etsitaan siirto")
     siirrot = []
-    siirrettava = -1
+    indeksi = 0
     kohde = -1
+    print("len(pelitilanne): {0}, pelitilanne: {1}".format(len(pelitilanne), pelitilanne))
     for kolo in pelitilanne:
+        if silmaluku != 6 and indeksi > 31:
+            break
+        if silmaluku > 35:
+            break
+            
         if kolo == BLUE:
             print("")
-            siirrettava = pelitilanne.index(kolo, siirrettava + 1)
+            siirrettava = indeksi
             kohde = etsiSiirronLoppupiste(siirrettava)
             print('siirrettava on', siirrettava, 'ja kohde on', kohde )
             siirrot.append((siirrettava, kohde))
+        indeksi += 1
     (siirrettava, kohde) = strategia(siirrot)
     print(pelitilanne)
     print(siirrot)
