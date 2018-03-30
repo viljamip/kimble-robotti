@@ -63,7 +63,10 @@ def strategia(siirrot): #FUNKTIO ON NS VALMIS T:JUHO
         if syodaankoNappula(siirto) == 1:
             #simppeli lisays joka antaa syonnista lisaa hyvyytta
             #tahan voi myohemmin lisata vaikka varikohtaiset minimiarvot tms. jonka yli mentaessa syominen antaa x maaran hyvyytta
-            hyvyys[siirrot.index(siirto)] = hyvyys[siirrot.index(siirto)] + 15
+            hyvyys[siirrot.index(siirto)] = hyvyys[siirrot.index(siirto)] + 20
+    for siirto in siirrot:
+        if (siirto[1] == 28 or siirto[1] == 29 or siirto[1] == 30 or siirto[1] == 31):
+            hyvyys[siirrot.index(siirto)] = hyvyys[siirrot.index(siirto)] + 25
     siirrot = [x for _,x in sorted(zip(hyvyys,siirrot), reverse=True)] #sorttaa listan isoimmasta pienimpaan
     for siirto in siirrot:
         if syodaankoNappula(siirto) == 1: # Syodaan
@@ -102,6 +105,7 @@ def etsiTyhjaPesasta(nappulanVari): #FUNKTIO ON NS VALMIS T:JUHO
     keltainenPesa = [36,37,38,39] 
     vihreaPesa = [40,41,42,43] 
     punainenPesa = [44,45,46,47] 
+    sininenPesa = [32,33,34,35]
 
     if nappulanVari == GREEN:
         for index in vihreaPesa:
@@ -113,6 +117,10 @@ def etsiTyhjaPesasta(nappulanVari): #FUNKTIO ON NS VALMIS T:JUHO
                 return index
     if nappulanVari == YELLOW:
         for index in keltainenPesa:
+            if pelitilanne[index] == 0:
+                return index
+    if nappulanVari == BLUE:
+        for index in sininenPesa:
             if pelitilanne[index] == 0:
                 return index
     return -1

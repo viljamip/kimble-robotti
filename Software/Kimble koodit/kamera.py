@@ -6,7 +6,7 @@ def kalibroiPerspektiivi():
 
 
 def nopanSilmaluku():
-    peli.silmaluku = 2 #testiajoa varten
+    peli.silmaluku = 6 #testiajoa varten
     return 1
 
 def tulkitseLauta():
@@ -18,10 +18,12 @@ def tulkitseLauta():
        #     if (alkio % 6 == 0):
         #        pelitilanne[alkio] = 1
     peli.pelitilanne[0] = 1
-    peli.pelitilanne[2] = 1
+    peli.pelitilanne[1] = 1
     peli.pelitilanne[4] = 3
     peli.pelitilanne[44] = 3
+    peli.pelitilanne[32] =  1
+    #peli.pelitilanne[57] =  4
+    #peli.pelitilanne[58] =  4
+    #peli.pelitilanne[59] =  4
     print("kameran palauttama pelitilanne", peli.pelitilanne)
     return 1
-    
-    return pelitilanne
