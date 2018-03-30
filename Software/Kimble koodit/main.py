@@ -9,6 +9,9 @@ def main():
     while True:
         
         input("Haluatko jatkaa?")
+        hardware.valo(false)
+        peli.pelaa()
+        hardware.valo(true)
         '''
         if (nappi == True):
             hardware.valo(false)
