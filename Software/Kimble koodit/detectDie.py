@@ -24,8 +24,8 @@ def detect(frame):
     greyScaled = cv.cvtColor(roiScaled, cv.COLOR_RGB2GRAY) 
     grey = cv.bilateralFilter(greyScaled, 7, 35,35)
     grey = cv.equalizeHist(grey)
-    cv.imshow("bilateral", grey)
-    cv.imshow("straightened", frame)
+    #cv.imshow("bilateral", grey)
+    #cv.imshow("straightened", frame)
     laplacian = cv.Laplacian(grey,cv.CV_64F, ksize=3, scale=0.5)
     #threshold = cv.erode(laplacian, kernel, iterations=1)
     #threshold = cv.dilate(threshold, kernel, iterations=2)
@@ -38,8 +38,8 @@ def detect(frame):
     threshold = cv.dilate(threshold, kernel, iterations=3)
     threshold = cv.erode(threshold, kernel, iterations=4)
     threshold = cv.dilate(threshold, kernel, iterations=2)
-    cv.imshow("laplacian", laplacian)
-    cv.imshow("threshLap", threshold)
+    #cv.imshow("laplacian", laplacian)
+    #cv.imshow("threshLap", threshold)
     
     treshWcontours, contours0, hierarchy = cv.findContours(threshold, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE) # find contours
     contours = [cv.approxPolyDP(cnt, 2, True) for cnt in contours0] # simplify contours
@@ -139,12 +139,12 @@ def detect(frame):
         return 1
     im_with_keypoints = cv.drawKeypoints(roiDie, validPoints, np.array([]), (0,0,255), cv.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
     im_with_keypoints = cv.drawContours(im_with_keypoints,[box],0,(0,255,0),2)
-    cv.imshow("Keypoints", im_with_keypoints)
+    #cv.imshow("Keypoints", im_with_keypoints)
 
     #minBoundingRect = cv.minAreaRect(keypoints)
     # TODO TÄHÄN VIELÄ TARKISTUS rect = minAreaRect() koolle (neljä nurkkaa saa box = cv.boxPoints(rect) ), jonka avulla voidaan heivata outlier pisteet pois eli, pituus eikä leveys saa olla liian suuret
     # TODO Tuon alueen koko riippuu pilkkujen määrästä, 1:lle oma, 2,3 oma ja loput kai täys neliö?
-    cv.waitKey(0)
+    #cv.waitKey(0)
     
     if count > 6: # Jos mukaan on tarttunut enemmänkin pisteitä, ei anneta ainakaan yli 6
         count = 6
@@ -170,13 +170,13 @@ def validatePoints(level,keypoints, shape):
 
         n = len(pointsToTest)
         a,b = calculateBoxDimensions(pointsToTest, shape)
-        print(min(a,b), max(a,b))
-        print(targetA[n],  targetB[n])
+        #print(min(a,b), max(a,b))
+        #print(targetA[n],  targetB[n])
         if abs(min(a,b) / targetA[n] - 1) < 0.10:
             if abs(max(a,b) / targetB[n] -1) < 0.10:
                 return n, pointsToTest
         if level<2:
-            print("trying removing level {0}".format(level))
+            #print("trying removing level {0}".format(level))
             result, testedPoints = validatePoints(level+1,pointsToTest, shape)
             if result>1:
                 return result, testedPoints

@@ -18,44 +18,42 @@ def closeSerial():
 def homing():
     # Open grbl serial port
     homing = '$H'
-    wakeupcall = '$#'
+    wakeupcall = '?'
     #Wake up grbl
     lahetaGcode(wakeupcall)
     time.sleep(1)   # Wait for grbl to initialize 
-    lahetaGcode(homing) 
+    lahetaGcode(homing)
+    odotaPysahtymista()
     return
 
 def kuvaAsento():
-    asento = 'G90 X22 Y-174 Z0' 
+    asento = 'G1 X22 Y-174 Z-1 F8000' 
     lahetaGcode(asento)
     return 1
 
 def peliAsento():
-    asento = 'G90 X0 Y-174 Z0' #MUUTA NAMA
+    asento = 'G1 X0 Y-174 Z-1 F8000'
     lahetaGcode(asento)
+    valo(True)
     return
 
 def painaNoppaa():
-    odotaPysahtymista()
-
     # Ajetaan nopan paalle
-    siirto = 'G90 Y0 Z-1'
+    siirto = 'G1 Y0 Z-1 F8000'
     lahetaGcode(siirto)  
     
     #painetaan noppaa
-    siirto = 'G90  Z-27'
+    siirto = 'G1  Z-20 F4000'
     lahetaGcode(siirto)
-    siirto = 'G90  Z-1'
+    siirto = 'G1  Z-27 F1000'
     lahetaGcode(siirto)
-    
-    #ajetaan takaisin sivuun
-    siirto = 'G90 Y-174 Z-1' #MUUTA NAMA    
+    siirto = 'G1  Z-1 F4000'
     lahetaGcode(siirto)
-    
     silmaluku = kamera.nopanSilmaluku()
     return silmaluku
 
 def lahetaGcode(koodi):
+    print("lähetetään: {0}".format(koodi))
     s.write('{0}\n'.format(koodi).encode('utf-8'))
     s.flushInput()
     grbl_out = s.readline()
@@ -84,23 +82,23 @@ def siirra(i1,i2):
     xLoppu = koordinaatit[i2][0]
     yLoppu = koordinaatit[i2][1] 
 
-    zYlos = 'G90 Z-1'
+    zYlos = 'G1 Z-1 F4000'
     lahetaGcode(zYlos)
 
-    nappaa = 'G90 X{} Y{}'.format(xAlku, yAlku)
-    laske  = 'G90 X{} Y{}'.format(xLoppu, yLoppu)
+    nappaa = 'G1 X{} Y{} F8000'.format(xAlku, yAlku)
+    laske  = 'G1 X{} Y{} F8000'.format(xLoppu, yLoppu)
     
     #Haetaan nappi
     lahetaGcode(nappaa)
-    lahetaGcode('G90 Z-32')
+    lahetaGcode('G1 Z-32 F4000')
     lahetaGcode('M8')
-    lahetaGcode('G90 Z-1')
+    lahetaGcode('G1 Z-1 F4000')
     
     #pudotetaan nappi
     lahetaGcode(laske)
-    lahetaGcode('G90 Z-32')
+    lahetaGcode('G1 Z-32 F4000')
     lahetaGcode('M9')
-    lahetaGcode('G90 Z-1')
+    lahetaGcode('G1 Z-1 F4000')
     
     return
  

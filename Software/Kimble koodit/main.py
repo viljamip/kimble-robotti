@@ -11,25 +11,21 @@ def main():
     
     hardware.kuvaAsento()
     kamera.kalibroiPerspektiivi()
-    hardware.valo(True)
+    hardware.peliAsento()
     
     while True:
         
-        syote = input("Haluatko jatkaa?")
+        syote = input("Haluatko jatkaa?\n")
         if (syote == 'Q'):
             break
+        if syote == 'H':
+            hardware.homing()
         
         hardware.valo(False)
         peli.pelaa()
         hardware.valo(True)
-        '''
-        if (nappi == True):
-            hardware.valo(false)
-            peli.pelaa()
-            hardware.valo(true)
-            '''
-            #Mahdollinen odotus looppiin, ehka tarpeeton. Aika ilmeisesti sekunteina.
-            #time.sleep(1)    
+        #Mahdollinen odotus looppiin, ehka tarpeeton. Aika ilmeisesti sekunteina.
+        #time.sleep(1)    
     
     return
 main()
