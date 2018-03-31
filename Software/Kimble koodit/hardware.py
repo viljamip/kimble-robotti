@@ -4,6 +4,7 @@ import kamera
 
 koordinaatit = [(-3.12,-139.7),(-9.08,-139.4),(-15.4,-135.2),(-21.88,-132.0),(-28.4,-135.1),(-34.6,-138.9),(-40.72,-138.7),(-46.88,-138.4),(-52.96,-138.5),(-59.48,-134.4),(-65.88,-131.3),(-72.36,-134.5),(-78.68,-138.4),(-84.8,-138.3),(-91.0,-138.2),(-97.2,-138.3),(-103.48,-134.3),(-109.88,-131.3),(-116.4,-134.3),(-122.8,-138.7),(-128.88,-138.7),(-135.08,-138.9),(-141.28,-138.8),(-147.68,-134.9),(-154.16,-131.7),(-160.56,-135.0),(-166.76,-139.2),(-172.96,-139.2),(-175.96,-125.1),(-175.96,-106.6),(-175.96,-87.7),(-175.96,-69.1),(5.64,-158.3),(2.040,-158.1),(-1.68,-158.0),(-5.36,-157.9),(-38.28,-157.8),(-41.96,-157.6),(-45.76,-157.6),(-49.48,-157.4),(-82.36,-157.2),(-86.08,-157.4),(-89.76,-157.4),(-93.56,-157.2),(-126.36,-157.2),(-130.16,-157.4),(-133.88,-157.4),(-137.56,-157.3),(-132.16,-124.4),(-132.16,-105.7),(-132.16,-87.2),(-132.16,-68.5),(-43.76,-124.6),(-43.76,-105.9),(-43.76,-87.2),(-43.76,-68.5),(-87.96,-124.4),(-87.96,-105.8),(-87.96,-86.8),(-87.96,-68.2)]
 
+kierroksenPituus = 176
 
 
 def openSerial():
@@ -14,7 +15,6 @@ def openSerial():
 def closeSerial():
     s.close()
     
-
 def homing():
     # Open grbl serial port
     homing = '$H'
@@ -53,6 +53,26 @@ def painaNoppaa():
     return silmaluku
 
 def lahetaGcode(koodi):
+    # Tämä lisää tai vähentää yhden kierroksen pituuden X:ään, jos matka on siten lyhyempi
+    if "X" in koodi:
+        muokattuKoodi = koodi.split("X")
+        alku = muokattuKoodi[0]
+        loppu = muokattuKoodi[1]
+        spaceIndex = loppu.find(" ")
+        if spaceIndex>-1:
+            x = loppu[0:spaceIndex]
+            loppuloppu = loppu[spaceIndex:]
+            xNum = float(x)
+            nykyinenX = kerroX()
+            
+            if(abs(xNum - (nykyinenX + kierroksenPituus)) < abs(xNum - nykyinenX)):
+                xNum -= kierroksenPituus
+            elif(abs(xNum - (nykyinenX - kierroksenPituus)) < abs(xNum - nykyinenX)):
+                xNum += kierroksenPituus
+            
+            uusi = '{0}X{1}{2}'.format(alku,xNum,loppuloppu)
+            koodi = uusi
+            
     print("lähetetään: {0}".format(koodi))
     s.write('{0}\n'.format(koodi).encode('utf-8'))
     s.flushInput()
@@ -73,7 +93,14 @@ def odotaPysahtymista():
     print('odotuksen wait-määrä {0}'.format(count))
     if count>0:
         time.sleep(1)
-
+        
+def kerroX():
+    s.write('?'.encode('utf-8'))
+    s.flushInput()
+    grbl_out = s.readline() # <Run|MPos:-58.080,-173.000,-2.000|FS:840,0>
+    asento = str(grbl_out).split("MPos:")
+    x = asento[1].split(",")
+    return float(x[0])
 
 def siirra(i1,i2):
     print(koordinaatit[i1][0])
@@ -108,6 +135,7 @@ def valo(paalla):
     else:
             lahetaGcode('M5')
     return
+
 
 #openSerial()
 #homing()
