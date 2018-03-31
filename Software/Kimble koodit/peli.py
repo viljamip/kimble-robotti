@@ -20,6 +20,7 @@ global silmaluku
 def pelaa():
     i1 = 0
     i2 = 0
+    
     tulkittu = hardware.painaNoppaa()
     
     tulkittu = kamera.tulkitseLauta() 
