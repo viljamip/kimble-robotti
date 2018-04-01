@@ -18,6 +18,7 @@ global silmaluku
 
         
 def pelaa():
+    hardware.valo(False)
     i1 = 0
     i2 = 0
     
@@ -34,17 +35,19 @@ def pelaa():
             hardware.siirra(i1, i2)
         if silmaluku == 6:
             pelaa() # Ilmeisesti kutosella saa uuden vuoron vaikka ei siirtaisi mitaan
+        else:
+            hardware.peliAsento()
     else:
         putsaaLauta(pelitilanne)
     
     return
 
-def etsiSiirto(): #FUNKTIO ON NS VALMIS T:JUHO
+def etsiSiirto(): 
     print("etsitaan siirto")
     siirrot = []
     indeksi = 0
     kohde = -1
-    print("len(pelitilanne): {0}, pelitilanne: {1}".format(len(pelitilanne), pelitilanne))
+    #print("len(pelitilanne): {0}, pelitilanne: {1}".format(len(pelitilanne), pelitilanne))
     for kolo in pelitilanne:
         if silmaluku != 6 and indeksi > 31:
             break
@@ -55,8 +58,9 @@ def etsiSiirto(): #FUNKTIO ON NS VALMIS T:JUHO
             print("")
             siirrettava = indeksi
             kohde = etsiSiirronLoppupiste(siirrettava)
-            print('siirrettava on', siirrettava, 'ja kohde on', kohde )
-            siirrot.append((siirrettava, kohde))
+            print('siirrettava on', siirrettava, 'ja kohde on', kohde)
+            if kohde > -1:
+                siirrot.append((siirrettava, kohde))
         indeksi += 1
     (siirrettava, kohde) = strategia(siirrot)
     print(pelitilanne)
@@ -64,7 +68,11 @@ def etsiSiirto(): #FUNKTIO ON NS VALMIS T:JUHO
     print(siirrettava, kohde)
     return(siirrettava, kohde)
 
-def strategia(siirrot): #FUNKTIO ON NS VALMIS T:JUHO
+<<<<<<< HEAD
+def strategia(siirrot): 
+=======
+def strategia(siirrot):
+>>>>>>> 73df18d14df332e1900acbb22fd1a4f3e04751ca
     hyvyys = []
     for siirto in siirrot:
         # Mita edemmas nappula on paassyt, sita arvokaampi se on 
@@ -76,8 +84,12 @@ def strategia(siirrot): #FUNKTIO ON NS VALMIS T:JUHO
             #tahan voi myohemmin lisata vaikka varikohtaiset minimiarvot tms. jonka yli mentaessa syominen antaa x maaran hyvyytta
             hyvyys[siirrot.index(siirto)] = hyvyys[siirrot.index(siirto)] + 20
     for siirto in siirrot:
-        if (siirto[1] == 28 or siirto[1] == 29 or siirto[1] == 30 or siirto[1] == 31):
-            hyvyys[siirrot.index(siirto)] = hyvyys[siirrot.index(siirto)] + 25
+        if (siirto[1] == 28 or siirto[1] == 29 or siirto[1] == 30 or siirto[1] == 31): # Jos päästään maaliin siirrolla +25
+            if siirto[0] < 28: # Huvittava bugi... se luuli pääsevänsä maaliin siirtelemällä nappulaa, joka oli jo maalissa
+                hyvyys[siirrot.index(siirto)] += 25
+    for siirto in siirrot:
+        if (siirto[0] == 28 or siirto[0] == 29 or siirto[0] == 30 or siirto[0] == 31):
+            hyvyys[siirrot.index(siirto)] -= 32
     siirrot = [x for _,x in sorted(zip(hyvyys,siirrot), reverse=True)] #sorttaa listan isoimmasta pienimpaan
     for siirto in siirrot:
         if syodaankoNappula(siirto) == 1: # Syodaan
@@ -94,7 +106,7 @@ def strategia(siirrot): #FUNKTIO ON NS VALMIS T:JUHO
   
     return(1,1)
 
-def etsiSiirronLoppupiste(index): #FUNKTIO ON NS VALMIS T:JUHO
+def etsiSiirronLoppupiste(index):
     # Jos lahdetaan robotin kotipesasta, mennaan robotin Start-ruutuun
     if index > 31 and index <= 35:
         return 0
@@ -103,16 +115,18 @@ def etsiSiirronLoppupiste(index): #FUNKTIO ON NS VALMIS T:JUHO
     loppuIndex = index + silmaluku
     if (loppuIndex > 31):
         loppuIndex = 31 + (31 - (index + silmaluku))
+    if(index > 27 and loppuIndex <= 27): # Ei siirretää maalista takaisin laudalle
+        return -1
     return loppuIndex
 
-def syodaankoNappula(siirto): #FUNKTIO ON NS VALMIS T:JUHO
+def syodaankoNappula(siirto): 
     if pelitilanne[siirto[1]] == 0:
         return 0
     if pelitilanne[siirto[1]] == BLUE:
         return -1
     return 1
 
-def etsiTyhjaPesasta(nappulanVari): #FUNKTIO ON NS VALMIS T:JUHO
+def etsiTyhjaPesasta(nappulanVari):
     keltainenPesa = [36,37,38,39] 
     vihreaPesa = [40,41,42,43] 
     punainenPesa = [44,45,46,47] 
@@ -181,7 +195,7 @@ def putsaaLauta(pelitilanne):
             hardware.siirra(paikka, index2)
             pelitilanne[paikka] = 0
             pelitilanne[index2] = GREEN
-    
+    hardware.peliAsento()
     return
 
 def onkoVoittajia(pelitilanne):
@@ -206,4 +220,3 @@ def onkoVoittajia(pelitilanne):
         
     return 0
 
-#pelaa()
