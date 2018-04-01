@@ -68,11 +68,8 @@ def etsiSiirto():
     print(siirrettava, kohde)
     return(siirrettava, kohde)
 
-<<<<<<< HEAD
-def strategia(siirrot): 
-=======
+
 def strategia(siirrot):
->>>>>>> 73df18d14df332e1900acbb22fd1a4f3e04751ca
     hyvyys = []
     for siirto in siirrot:
         # Mita edemmas nappula on paassyt, sita arvokaampi se on 
