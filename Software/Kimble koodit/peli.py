@@ -22,11 +22,9 @@ def pelaa():
     i1 = 0
     i2 = 0
     
-    tulkittu = hardware.painaNoppaa()
+    noppaPainettu = hardware.painaNoppaa()
+    peliTulkittu = kamera.tulkitsePeli()
     print("Nopan silmäluku: {0}".format(silmaluku))
-    hardware.odotaPysahtymista()
-    tulkittu = kamera.tulkitseLauta() 
-    hardware.odotaPysahtymista()
     
     voittaja = onkoVoittajia(pelitilanne)
     if (voittaja == 0):
@@ -43,7 +41,7 @@ def pelaa():
     return
 
 def etsiSiirto(): 
-    print("etsitaan siirto")
+    #print("etsitaan siirto")
     siirrot = []
     indeksi = 0
     kohde = -1
@@ -55,16 +53,16 @@ def etsiSiirto():
             break
             
         if kolo == BLUE:
-            print("")
+            #print("")
             siirrettava = indeksi
             kohde = etsiSiirronLoppupiste(siirrettava)
-            print('siirrettava on', siirrettava, 'ja kohde on', kohde)
+            #print('siirrettava on', siirrettava, 'ja kohde on', kohde)
             if kohde > -1:
                 siirrot.append((siirrettava, kohde))
         indeksi += 1
     (siirrettava, kohde) = strategia(siirrot)
     print(pelitilanne)
-    print(siirrot)
+    #print(siirrot)
     print(siirrettava, kohde)
     return(siirrettava, kohde)
 
@@ -92,7 +90,7 @@ def strategia(siirrot):
         if syodaankoNappula(siirto) == 1: # Syodaan
             tyhjanKolonIndeksi =  etsiTyhjaPesasta(pelitilanne[siirto[1]])
             if tyhjanKolonIndeksi != -1:
-                print(siirto[1])
+                #print(siirto[1])
                 hardware.siirra(siirto[1], tyhjanKolonIndeksi) # Tehdaan nappulan syonti
                 return siirto
         if syodaankoNappula(siirto) == 0: # Ei ole syotavaa
@@ -148,8 +146,8 @@ def etsiTyhjaPesasta(nappulanVari):
     return -1
 
 def putsaaLauta(pelitilanne):
-    for paikka in range(31):
-        print(pelitilanne[paikka])
+    for paikka in range(32):
+        #print(pelitilanne[paikka])
         if (pelitilanne[paikka] == BLUE):
             index2 = etsiTyhjaPesasta(BLUE)
             hardware.siirra(paikka, index2)
@@ -171,7 +169,7 @@ def putsaaLauta(pelitilanne):
             pelitilanne[paikka] = 0
             pelitilanne[index2] = GREEN
     for paikka in range(48, 60):
-        print(pelitilanne[paikka])
+        #print(pelitilanne[paikka])
         if (pelitilanne[paikka] == BLUE):
             index2 = etsiTyhjaPesasta(BLUE)
             hardware.siirra(paikka, index2)

@@ -4,9 +4,9 @@ import math
 import peli
 import random
 
-MIN_AREA =  100 
+MIN_AREA =  50 
 MAX_AREA = 330
-MAX_CIRCULARITY_DEVIATION = 0.19
+MAX_CIRCULARITY_DEVIATION = 0.35
 TRESHOLD = 12
 MAX_DISTANCE_FROM_CENTER = 60
 DIAMETER = 175
@@ -34,12 +34,12 @@ def detect(frame):
     cv.circle(mask, (int(mask.shape[0]*0.5), int(mask.shape[1]*0.5)), int(width*0.45), (255,255,255),-1)
     laplacian = cv.bitwise_and(laplacian, mask)
     ret, threshold = cv.threshold(laplacian, TRESHOLD, 255, cv.THRESH_BINARY_INV) # ONKO ADAPTIVE PAREMPI?
-    threshold = cv.erode(threshold, kernel, iterations=2)
-    threshold = cv.dilate(threshold, kernel, iterations=3)
-    threshold = cv.erode(threshold, kernel, iterations=4)
-    threshold = cv.dilate(threshold, kernel, iterations=2)
+    #threshold = cv.erode(threshold, kernel, iterations=1)
+    #threshold = cv.dilate(threshold, kernel, iterations=1)
+    threshold = cv.erode(threshold, kernel, iterations=3)
+    threshold = cv.dilate(threshold, kernel, iterations=4)
     #cv.imshow("laplacian", laplacian)
-    #cv.imshow("threshLap", threshold)
+    cv.imshow("threshLap", threshold)
     
     treshWcontours, contours0, hierarchy = cv.findContours(threshold, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE) # find contours
     contours = [cv.approxPolyDP(cnt, 2, True) for cnt in contours0] # simplify contours
@@ -112,19 +112,19 @@ def detect(frame):
     params = cv.SimpleBlobDetector_Params()
     # Filter by Area.
     params.filterByArea = True
-    params.minArea = 300
+    params.minArea = 200
     params.maxArea = 900
     # Filter by Circularity
     params.filterByCircularity = True
-    params.minCircularity = 0.74
+    params.minCircularity = 0.6
     # Filter by Convexity
     params.filterByConvexity = False
     #params.minConvexity = 0.87
     # Filter by Inertia
     params.filterByInertia = False
-    params.maxInertiaRatio = 0.9
+    params.maxInertiaRatio = 0.95
     # Distance Between Blobs
-    params.minDistBetweenBlobs = 10
+    params.minDistBetweenBlobs = 7
     # Create a detector with the parameters
     detector = cv.SimpleBlobDetector_create(params)
  
@@ -139,7 +139,7 @@ def detect(frame):
         return 1
     im_with_keypoints = cv.drawKeypoints(roiDie, validPoints, np.array([]), (0,0,255), cv.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
     im_with_keypoints = cv.drawContours(im_with_keypoints,[box],0,(0,255,0),2)
-    #cv.imshow("Keypoints", im_with_keypoints)
+    cv.imshow("Keypoints", im_with_keypoints)
 
     #minBoundingRect = cv.minAreaRect(keypoints)
     # TODO TÄHÄN VIELÄ TARKISTUS rect = minAreaRect() koolle (neljä nurkkaa saa box = cv.boxPoints(rect) ), jonka avulla voidaan heivata outlier pisteet pois eli, pituus eikä leveys saa olla liian suuret
@@ -156,8 +156,8 @@ def detect(frame):
     return count
 
 def validatePoints(level,keypoints, shape):
-    targetA = [0,28,30,30,85,85,81,0,0,0]
-    targetB = [0,28,107,107,85,85,81,0,0,0]
+    targetA = [1,28,30,30,85,85,81,1,1,1]
+    targetB = [1,28,107,107,85,85,81,1,1,1]
 
     count = len(keypoints)
     index = -1
