@@ -12,7 +12,7 @@ def syonti():
         if peli.syodaankoNappula(siirto) == 1:
             #simppeli lisays joka antaa syonnista lisaa hyvyytta
             #tahan voi myohemmin lisata vaikka varikohtaiset minimiarvot tms. jonka yli mentaessa syominen antaa x maaran hyvyytta
-            peli.hyvyys[peli.siirrot.index(siirto)] += 25
+            peli.hyvyys[peli.siirrot.index(siirto)] += 30
     return
     
 def siirtoOmaanMaaliin():
@@ -32,7 +32,7 @@ def lahtoPaikatVapaana():
         if(siirto[0] == 0):
             peli.hyvyys[peli.siirrot.index(siirto)] = 30 # oman lahtopaikan puhtaanapito omista nappuloista
         if(siirto[0] == 21 or siirto[0] == 14 or siirto[0] == 7):
-            peli.hyvyys[peli.siirrot.index(siirto)] += 10 # vastustajien lahtopaikalta poistuminen
+            peli.hyvyys[peli.siirrot.index(siirto)] += 9 # vastustajien lahtopaikalta poistuminen
         if(siirto[1] == 21 or siirto[1] == 14 or siirto[1] == 7):
             peli.hyvyys[peli.siirrot.index(siirto)] -= 10 # vastustajian lahtopaikkoihin paatyminen 
 

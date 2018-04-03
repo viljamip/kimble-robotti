@@ -9,12 +9,17 @@ def testi():
 
 for i in range(60): 
     peli.pelitilanne.append(0)
-peli.pelitilanne[15] = 0
+#kentta
+peli.pelitilanne[0] = 1
+peli.pelitilanne[15] = 1
+peli.pelitilanne[25] = 1
+peli.pelitilanne[25] = 0
+#maali
 peli.pelitilanne[28] = 1
-peli.pelitilanne[21] = 0
 peli.pelitilanne[31] = 1
-peli.pelitilanne[35] = 0
+#pesa
 peli.pelitilanne[32] = 0
+peli.pelitilanne[34] = 0
 
 peli.silmaluku = 6
 
