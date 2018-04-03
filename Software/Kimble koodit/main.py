@@ -2,9 +2,6 @@ import hardware
 import peli
 import kamera
 
-
-
-
 def main():
     hardware.openSerial()
     hardware.homing()

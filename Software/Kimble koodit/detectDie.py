@@ -4,13 +4,12 @@ import math
 import peli
 import random
 
-MIN_AREA =  50 
+MIN_AREA =  40 
 MAX_AREA = 330
-MAX_CIRCULARITY_DEVIATION = 0.35
 TRESHOLD = 12
 MAX_DISTANCE_FROM_CENTER = 60
 DIAMETER = 175
-MAX_CIRCULARITY_DEVIATION = 0.29
+MAX_CIRCULARITY_DEVIATION = 0.35
 
 kernel = cv.getStructuringElement(cv.MORPH_ELLIPSE,(3,3))
 
@@ -103,8 +102,8 @@ def detect(frame):
     maxY = constrain(maxY, (minY + padding), height)
     #print(minX,maxX,minY,maxY)
     roiDie = greyScaled[minY:maxY, minX:maxX]
-    roiDie = cv.bilateralFilter(roiDie, 7, 75,75)
-    clahe = cv.createCLAHE(clipLimit=3.0, tileGridSize=(5,5))
+    roiDie = cv.bilateralFilter(roiDie, 8, 85,85)
+    clahe = cv.createCLAHE(clipLimit=3.5, tileGridSize=(7,7))
     roiDie = clahe.apply(roiDie)
 
     # Setup BlobDetector
@@ -135,7 +134,7 @@ def detect(frame):
     # Show keypoints
     count, validPoints = validatePoints(0,keypoints, roiDie.shape)
     box = minAreaBox(validPoints, roiDie.shape)
-    if box == None:
+    if box is None:
         return 1
     im_with_keypoints = cv.drawKeypoints(roiDie, validPoints, np.array([]), (0,0,255), cv.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
     im_with_keypoints = cv.drawContours(im_with_keypoints,[box],0,(0,255,0),2)

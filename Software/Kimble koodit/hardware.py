@@ -48,7 +48,7 @@ def painaNoppaa():
     #painetaan noppaa
     siirto = 'G1  Z-20 F4000'
     lahetaGcode(siirto)
-    siirto = 'G1  Z-27 F1000'
+    siirto = 'G1  Z-27 F800'
     lahetaGcode(siirto)
     siirto = 'G1  Z-1 F4000'
     lahetaGcode(siirto)
