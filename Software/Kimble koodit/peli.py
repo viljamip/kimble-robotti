@@ -33,7 +33,7 @@ def pelaa():
         (i1, i2) = etsiSiirto()
         if (i1, i2) != (-1, -1):
             hardware.siirra(i1, i2)
-        if (silmaluku == 6 and uusi_vuoro_vain_liikkumalla == False:
+        if (silmaluku == 6 and uusi_vuoro_vain_liikkumalla == False):
             pelaa() # Ilmeisesti kutosella saa uuden vuoron vaikka ei siirtaisi mitaan
         if (silmaluku == 6 and uusi_vuoro_vain_liikkumalla == True and i2 != -1):
             pelaa()
