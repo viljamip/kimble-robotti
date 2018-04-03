@@ -1,7 +1,7 @@
 import cv2 as cv
 import numpy as np
 import math
-import detectDie as dD
+import detectDie2 as dD
 import findPerspective as fP
 import tulkitseLauta as tL
 import hardware
@@ -54,7 +54,7 @@ def otaKuva(kaannettu180=False):
         
     cv.normalize(frame, frame, 0, 255, cv.NORM_MINMAX)
 
-    if M == None:
+    if M is None:
         print("Aja ensin kalibroiPerspektiivi()")
         return None
         

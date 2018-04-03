@@ -1,7 +1,7 @@
 import numpy as np
 import cv2 as cv
 import findPerspective as fP
-import detectDie as dD
+import detectDie2 as dD
 import glob
 import argparse
 import kamera
@@ -18,6 +18,7 @@ def detectDie(frame, showImages, answer):
     if showImages and dieNumber != answer:
         #cv.imshow("tranformed",frame)
         cv.waitKey(0)
+        cv.destroyAllWindows()
 
     return dieNumber
 
@@ -41,7 +42,7 @@ def runTests():
 
 def runTest(imageFileName, answer):
     frame = cv.imread(imageFileName)
-    dieNumber = detectDie(frame, True, answer)
+    dieNumber = detectDie(frame, False, answer)
 
     if(dieNumber == answer):
         print("TEST OK: ", imageFileName)

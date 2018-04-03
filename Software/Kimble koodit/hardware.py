@@ -46,11 +46,11 @@ def painaNoppaa():
     lahetaGcode(siirto)  
     
     #painetaan noppaa
-    siirto = 'G1  Z-20 F4000'
+    siirto = 'G1  Z-20 F2000'
     lahetaGcode(siirto)
-    siirto = 'G1  Z-27 F800'
+    siirto = 'G1  Z-27.0 F500'
     lahetaGcode(siirto)
-    siirto = 'G1  Z-1 F4000'
+    siirto = 'G1  Z-1 F2000'
     lahetaGcode(siirto)
     return 1
 

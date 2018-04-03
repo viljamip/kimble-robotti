@@ -14,6 +14,7 @@ MAX_CIRCULARITY_DEVIATION = 0.35
 kernel = cv.getStructuringElement(cv.MORPH_ELLIPSE,(3,3))
 
 def detect(frame):
+    cv.destroyAllWindows()
     width = frame.shape[0]
     height = frame.shape[1]
     roi = frame[(int(height/ 2) - int(DIAMETER / 2)):(int(height / 2) + int(DIAMETER / 2)), (int(width / 2) - int(DIAMETER / 2)):(int(width / 2) + int(DIAMETER / 2))]
@@ -168,6 +169,8 @@ def validatePoints(level,keypoints, shape):
             pointsToTest.pop(index)
 
         n = len(pointsToTest)
+        if n >= len(targetA):
+            return 6, pointsToTest
         a,b = calculateBoxDimensions(pointsToTest, shape)
         #print(min(a,b), max(a,b))
         #print(targetA[n],  targetB[n])
@@ -201,7 +204,7 @@ def minAreaBox(keypoints,shape):
     keypointsMask = cv.drawKeypoints(keypointsMask, keypoints, np.array([]), (255,255,255), cv.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
     keypointsMask = cv.cvtColor(keypointsMask, cv.COLOR_BGR2GRAY)
     points = cv.findNonZero(keypointsMask)
-    if points == None:
+    if points is None:
         return None
     minRect = cv.minAreaRect(points)
     box = cv.boxPoints(minRect)
