@@ -1,5 +1,6 @@
-import hardware
-import kamera
+import hardware #POISTA kommentointi
+import kamera   #POISTA kommentointi
+import strategiat
 
 uusi_vuoro_vain_liikkumalla = True # True: pitaa liikuttaa nappulaa etta voi siirtaa uudestaan (toki pitaa myos olla silmaluku 6
                                    # False: riittaa pelkastaan silmaluku 6 etta voi liikuttaa uudestaan
@@ -15,6 +16,10 @@ GREEN = 4
 global pelitilanne
 pelitilanne = []
 global silmaluku
+global hyvyys
+hyvyys = []
+global siirrot
+siirrot = []
 #for i in range(60):
  #       pelitilanne.append(0)
 
@@ -46,7 +51,7 @@ def pelaa():
 
 def etsiSiirto(): 
     #print("etsitaan siirto")
-    siirrot = []
+    global siirrot
     indeksi = 0
     kohde = -1
     #print("len(pelitilanne): {0}, pelitilanne: {1}".format(len(pelitilanne), pelitilanne))
@@ -64,38 +69,34 @@ def etsiSiirto():
             if kohde > -1:
                 siirrot.append((siirrettava, kohde))
         indeksi += 1
+    print("siirrot ovat",siirrot)
     (siirrettava, kohde) = strategia(siirrot)
     print(pelitilanne)
-    #print(siirrot)
     print(siirrettava, kohde)
+    siirrot = []
     return(siirrettava, kohde)
 
 
 def strategia(siirrot):
-    hyvyys = []
-    for siirto in siirrot:
-        # Mita edemmas nappula on paassyt, sita arvokaampi se on 
+    global hyvyys
+
+    for siirto in siirrot: # Mita edemmas nappula on paassyt, sita arvokaampi se on 
         hyvyys.append(siirto[0])
-    # tahan valiin voi lisata myohemmin muita hyvyyteen vaikuttavia strategioita/looppeja
-    for siirto in siirrot:
-        if syodaankoNappula(siirto) == 1:
-            #simppeli lisays joka antaa syonnista lisaa hyvyytta
-            #tahan voi myohemmin lisata vaikka varikohtaiset minimiarvot tms. jonka yli mentaessa syominen antaa x maaran hyvyytta
-            hyvyys[siirrot.index(siirto)] = hyvyys[siirrot.index(siirto)] + 20
-    for siirto in siirrot:
-        if (siirto[1] == 28 or siirto[1] == 29 or siirto[1] == 30 or siirto[1] == 31): # Jos päästään maaliin siirrolla +25
-            if siirto[0] < 28: # Huvittava bugi... se luuli pääsevänsä maaliin siirtelemällä nappulaa, joka oli jo maalissa
-                hyvyys[siirrot.index(siirto)] += 25
-    for siirto in siirrot:
-        if (siirto[0] == 28 or siirto[0] == 29 or siirto[0] == 30 or siirto[0] == 31):
-            hyvyys[siirrot.index(siirto)] -= 32
+        
+    strategiat.syonti()
+    strategiat.omaMaali()
+    strategiat.lahtoPaikat()
+    
+    #print("hyvyys on:", hyvyys)
+    #print("siirrot ovat:", siirrot)
     siirrot = [x for _,x in sorted(zip(hyvyys,siirrot), reverse=True)] #sorttaa listan isoimmasta pienimpaan
+    hyvyys = []
     for siirto in siirrot:
         if syodaankoNappula(siirto) == 1: # Syodaan
             tyhjanKolonIndeksi =  etsiTyhjaPesasta(pelitilanne[siirto[1]])
             if tyhjanKolonIndeksi != -1:
                 #print(siirto[1])
-                hardware.siirra(siirto[1], tyhjanKolonIndeksi) # Tehdaan nappulan syonti
+                hardware.siirra(siirto[1], tyhjanKolonIndeksi) # Tehdaan nappulan syonti #POISTA kommentointi HUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOM
                 return siirto
         if syodaankoNappula(siirto) == 0: # Ei ole syotavaa
             return siirto
@@ -221,4 +222,3 @@ def onkoVoittajia(pelitilanne):
         return GREEN
         
     return 0
-
