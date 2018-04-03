@@ -34,7 +34,7 @@ def lahtoPaikatVapaana():
         if(siirto[0] == 21 or siirto[0] == 14 or siirto[0] == 7):
             peli.hyvyys[peli.siirrot.index(siirto)] += 9 # vastustajien lahtopaikalta poistuminen
         if(siirto[1] == 21 or siirto[1] == 14 or siirto[1] == 7):
-            peli.hyvyys[peli.siirrot.index(siirto)] -= 10 # vastustajian lahtopaikkoihin paatyminen 
+            peli.hyvyys[peli.siirrot.index(siirto)] -= 8 # vastustajian lahtopaikkoihin paatyminen 
 
 def eiKaikkiaKentalle(): # halutaan(ko?) pitaa vain 2 nappulaa kerrallaan pelialueella, jotta syomisen riski on pieni, mutta toisaalta oman nappulan joutuessa syodyksi peli ei pysahdy kokonaan siksi aikaa etta saadaan nopan luku 6
     tilanne = peli.pelitilanne
@@ -45,7 +45,7 @@ def eiKaikkiaKentalle(): # halutaan(ko?) pitaa vain 2 nappulaa kerrallaan pelial
     if poissaPelista <= 2:
         for siirto in peli.siirrot:
             if(siirto[0] == 32 or siirto[0] == 33 or siirto[0] == 34 or siirto[0] == 35):
-                peli.hyvyys[peli.siirrot.index(siirto)] = - 10 
+                peli.hyvyys[peli.siirrot.index(siirto)] = - 5 
         
 def omaMaaliJarjestykseen():
     for siirto in peli.siirrot: # vahentaa jo maalissa olevien nappuloiden siirtojen hyvyytta

@@ -1,5 +1,5 @@
-import hardware #POISTA kommentointi
-import kamera   #POISTA kommentointi
+import hardware 
+import kamera   
 import strategiat
 
 uusi_vuoro_vain_liikkumalla = True # True: pitaa liikuttaa nappulaa etta voi siirtaa uudestaan (toki pitaa myos olla silmaluku 6
@@ -98,7 +98,7 @@ def strategia(siirrot):
             tyhjanKolonIndeksi =  etsiTyhjaPesasta(pelitilanne[siirto[1]])
             if tyhjanKolonIndeksi != -1:
                 #print(siirto[1])
-                hardware.siirra(siirto[1], tyhjanKolonIndeksi) # Tehdaan nappulan syonti #POISTA kommentointi HUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOM
+                hardware.siirra(siirto[1], tyhjanKolonIndeksi) # Tehdaan nappulan syonti 
                 return siirto
         if syodaankoNappula(siirto) == 0  and siirto[0] != 28: # Ei ole syotavaa 
             return siirto

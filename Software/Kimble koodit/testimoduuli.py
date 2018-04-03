@@ -10,24 +10,23 @@ def testi():
 for i in range(60): 
     peli.pelitilanne.append(0)
 #kentta
-peli.pelitilanne[0] = 1
-peli.pelitilanne[15] = 1
-peli.pelitilanne[25] = 1
+peli.pelitilanne[0] = 0
+peli.pelitilanne[15] = 0
 peli.pelitilanne[25] = 0
+peli.pelitilanne[26] = 0
+peli.pelitilanne[27] = 1
 #maali
 peli.pelitilanne[28] = 1
+peli.pelitilanne[29] = 0
+peli.pelitilanne[30] = 1
 peli.pelitilanne[31] = 1
 #pesa
 peli.pelitilanne[32] = 0
 peli.pelitilanne[34] = 0
 
-peli.silmaluku = 6
+peli.silmaluku = 3
 
-indeksilista = []
-for i in range(60): 
-    indeksilista.append(i)
-for i in range(60): 
-    indeksilista[i] = (peli.pelitilanne[i], indeksilista[i])
+
 
     
 testi()
