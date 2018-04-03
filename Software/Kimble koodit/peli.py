@@ -1,6 +1,8 @@
 import hardware
 import kamera
 
+uusi_vuoro_vain_liikkumalla = True # True: pitaa liikuttaa nappulaa etta voi siirtaa uudestaan (toki pitaa myos olla silmaluku 6
+                                   # False: riittaa pelkastaan silmaluku 6 etta voi liikuttaa uudestaan
 
 #0 - 31 "pelikenttaa",32 - 35 OMA koti, 36 - 39 YELLOW koti, 40 - 43 GREEN koti, 44- 47 RED koti
 #48 - 51 RED maali, 52 - 55 YELLOW maali, 56 - 59 GREEN maali
@@ -31,8 +33,10 @@ def pelaa():
         (i1, i2) = etsiSiirto()
         if (i1, i2) != (-1, -1):
             hardware.siirra(i1, i2)
-        if silmaluku == 6:
+        if (silmaluku == 6 and uusi_vuoro_vain_liikkumalla == False:
             pelaa() # Ilmeisesti kutosella saa uuden vuoron vaikka ei siirtaisi mitaan
+        if (silmaluku == 6 and uusi_vuoro_vain_liikkumalla == True and i2 != -1):
+            pelaa()
         else:
             hardware.peliAsento()
     else:
@@ -95,6 +99,9 @@ def strategia(siirrot):
                 return siirto
         if syodaankoNappula(siirto) == 0: # Ei ole syotavaa
             return siirto
+        if (uusi_vuoro_vain_liikkumalla == True and siirto[0] == siirto[1]):
+            return siirto
+            
     # Ei loytynyt laillisia siirtoja, palautetaan (-1,-1) eli ei siirreta ollenkaan
     return (-1,-1) 
 
