@@ -67,7 +67,7 @@ def etsiSiirto():
             kohde = etsiSiirronLoppupiste(siirrettava)
             #print('siirrettava on', siirrettava, 'ja kohde on', kohde)
             if kohde > -1:
-                siirrot.append((siirrettava, kohde))
+                siirrot.append([siirrettava, kohde])
         indeksi += 1
     print("siirrot ovat",siirrot)
     (siirrettava, kohde) = strategia(siirrot)
@@ -83,12 +83,14 @@ def strategia(siirrot):
     for siirto in siirrot: # Mita edemmas nappula on paassyt, sita arvokaampi se on 
         hyvyys.append(siirto[0])
         
-    strategiat.syonti()
-    strategiat.omaMaali()
-    strategiat.lahtoPaikat()
-    
-    #print("hyvyys on:", hyvyys)
-    #print("siirrot ovat:", siirrot)
+    strategiat.syonti() # lisaa syontiin johtavan siirron hyvyytta
+    strategiat.siirtoOmaanMaaliin() #lisaa maaliin johtavan siirron hyvyytta niin, etta siita tulee ns dominoiva siirto. Mikali siirto on indeksiin 28 tai 31, ovat nama ensisijaisia
+    strategiat.lahtoPaikatVapaana() #pyrkii pitamaan oman lahtopaikan vapaana, ja samalla vahentamaan siirtojen hyvyytta. jotka johtavat toisen lahtopaikalle. Mikali nappula on jo toisen lahtopaikalla, niin hyvyytta kasvatetaan
+    strategiat.eiKaikkiaKentalle() #vahentaa kotipesassa olevien siirtojen hyvyytta, mikali pelikentalla (poislukien maali) on jo 2 omaa nappulaa
+    strategiat.omaMaaliJarjestykseen() #talla hetkella funktio pitaa huolen, ettei indekseissa 28 ja 31 olevia nappuloita siirreta
+           
+    print("hyvyys on:", hyvyys)
+    print("siirrot ovat:", siirrot)
     siirrot = [x for _,x in sorted(zip(hyvyys,siirrot), reverse=True)] #sorttaa listan isoimmasta pienimpaan
     hyvyys = []
     for siirto in siirrot:
@@ -98,9 +100,11 @@ def strategia(siirrot):
                 #print(siirto[1])
                 hardware.siirra(siirto[1], tyhjanKolonIndeksi) # Tehdaan nappulan syonti #POISTA kommentointi HUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOMHUOM
                 return siirto
-        if syodaankoNappula(siirto) == 0: # Ei ole syotavaa
+        if syodaankoNappula(siirto) == 0  and siirto[0] != 28: # Ei ole syotavaa 
             return siirto
-        if (uusi_vuoro_vain_liikkumalla == True and siirto[0] == siirto[1]):
+        if (uusi_vuoro_vain_liikkumalla == True and siirto[0] == 28 and silmaluku == 6): #tuli vahan ruma tapa mutta pitaisi sentas toimia
+            print("siirto on",siirto)
+            siirto[1] = siirto[0]# omaMaaliJarjestykseen funktion jaljilta siirto[1] olisi -1, joka ei johtaisi siirtoon
             return siirto
             
     # Ei loytynyt laillisia siirtoja, palautetaan (-1,-1) eli ei siirreta ollenkaan
