@@ -42,7 +42,7 @@ def kalibroiPerspektiivi():
 def otaKuva(kaannettu180=False):
     ret = hardware.kuvaAsento(kaannettu180)
     hardware.odotaPysahtymista()
-    time.sleep(0.2)
+    #time.sleep(0.2)
     ret, frame = vcap.read()
     if not ret:
         print("Kameran kanssa oli ongelma.")
@@ -114,19 +114,6 @@ def exposureSmoothing(frame):
         
     frame = target16bit.astype('uint8')
     return frame
-
-#def nopanSilmaluku():
-#    hardware.kuvaAsento()
-#    hardware.odotaPysahtymista()
-#    frame = otaKuva()
-#    peli.silmaluku = dD.detect(frame)
-#    return 1
-#
-#def tulkitseLauta():
-#    hardware.odotaPysahtymista()
-#    frame = otaKuva()
-#    ret = tL.tulkitse(frame)
-#    return 1
     
 def tulkitsePeli():
     frame1 = otaKuva(False)
@@ -135,7 +122,7 @@ def tulkitsePeli():
     cv.imshow("stitched", stitched)
     peli.silmaluku = dD.detect(stitched)
     tulkittu = tL.tulkitse(stitched)
-    cv.waitKey(0)
+    #cv.waitKey(0)
 
 def applyTransform(frame, M):
     return cv.warpPerspective(frame, M, (800,800))
