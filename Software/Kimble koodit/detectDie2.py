@@ -48,7 +48,7 @@ def detect(frame):
 		
 		for c in contours:
 			area = cv.contourArea(c)
-			if area > 1200 and area < 2000: # Neliön pinta-ala on näissä rajoissa
+			if area > 1200 and area < 1850: # Neliön pinta-ala on näissä rajoissa
 				M = cv.moments(c)
 				cX = int((M["m10"] / M["m00"]) * ratio) # contourin x-koordinaatti
 				cY = int((M["m01"] / M["m00"]) * ratio) # contourin y-koordinaatti
@@ -92,7 +92,10 @@ def detect(frame):
 	#noppaKuva = noppaKuva[8:192, 8:192] # Rajataan tummat reunat pois
 
 	noppaBlur = cv.GaussianBlur(noppaKuva,(5,5),0)
-	ret,noppaTreshold = cv.threshold(noppaBlur,152,255,cv.THRESH_BINARY)
+	ret,noppaTreshold = cv.threshold(noppaBlur,185,255,cv.THRESH_BINARY)
+	noppaTreshold = cv.dilate(noppaTreshold, kernel, iterations=2)
+	noppaTreshold = cv.erode(noppaTreshold, kernel, iterations=2)
+	
 	
 	# Etsitään contourit
 	treshWcontours, contours0, hierarchy = cv.findContours(noppaTreshold, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE) # find contours
@@ -102,14 +105,20 @@ def detect(frame):
 	cv.imshow("nT", noppaTreshold)
 	for c in noppaContours:
 		area = cv.contourArea(c)
-		#print(area)
-		if area > 210 and area < 2200: # Neliön pinta-ala on näissä rajoissa
+		print(area)
+		if area > 210 and area < 3 * 2100: # Pilkun pinta-ala on näissä rajoissa
 			M = cv.moments(c)
 			cX = int((M["m10"] / M["m00"])) # contourin x-koordinaatti
 			cY = int((M["m01"] / M["m00"])) # contourin y-koordinaatti
 			if cX > 8 and cX < 165 and cY > 8 and cY <165:
-				#print("pip x: {0} y: {1} area: {2}".format(cX,cY,area))
-				pipCount += 1
+				print("pip x: {0} y: {1} area: {2}".format(cX,cY,area))
+				# Kutosessa kaksi tai kolme pistettä saattaa olla yhdessä köntissä, pinta-alan mukaan voidaan laskea yksi contour kahdeksi tai kolmeksi pisteeksi
+				if area < 2300:
+					pipCount += 1
+				elif area < 3000:
+					pipCount += 2
+				else:
+					pipCount +=3
 
 	pipCount = max(1, min(pipCount, 6))
 	box = np.int0(box)
@@ -122,5 +131,5 @@ def detect(frame):
 	#cv.waitKey(0)
 	return pipCount
 
-#frame = cv.imread("noppaTestiKuvat/5/noppa37.jpg")
+#frame = cv.imread("noppaTestiKuvat/6/noppa0.jpg")
 #silmaluku = detect(frame)

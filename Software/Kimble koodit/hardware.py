@@ -28,14 +28,14 @@ def homing():
 
 def kuvaAsento(kaannettu180=False):
     if kaannettu180:
-        asento = 'G1 X110 Y-174 Z-1 F8000' 
+        asento = 'G1 X110 Y-174 Z-2 F8000' 
     else:
-        asento = 'G1 X22 Y-174 Z-1 F8000' 
+        asento = 'G1 X22 Y-174 Z-2 F8000' 
     lahetaGcode(asento)
     return 1
 
 def peliAsento():
-    asento = 'G1 X0 Y-174 Z-1 F8000'
+    asento = 'G1 X0 Y-174 Z-2 F8000'
     lahetaGcode(asento)
     valo(True)
     return
@@ -50,7 +50,7 @@ def painaNoppaa():
     lahetaGcode(siirto)
     siirto = 'G1  Z-27.0 F500'
     lahetaGcode(siirto)
-    siirto = 'G1  Z-1 F2000'
+    siirto = 'G1  Z-2 F2000'
     lahetaGcode(siirto)
     return 1
 
@@ -111,7 +111,7 @@ def siirra(i1,i2):
     xLoppu = koordinaatit[i2][0]
     yLoppu = koordinaatit[i2][1] 
 
-    zYlos = 'G1 Z-1 F4000'
+    zYlos = 'G1 Z-2 F4000'
     lahetaGcode(zYlos)
 
     nappaa = 'G1 X{} Y{} F8000'.format(xAlku, yAlku)
@@ -119,15 +119,15 @@ def siirra(i1,i2):
     
     #Haetaan nappi
     lahetaGcode(nappaa)
-    lahetaGcode('G1 Z-32 F4000')
+    lahetaGcode('G1 Z-32 F2000')
     lahetaGcode('M8')
-    lahetaGcode('G1 Z-1 F4000')
+    lahetaGcode('G1 Z-2 F2000')
     
     #pudotetaan nappi
     lahetaGcode(laske)
-    lahetaGcode('G1 Z-32 F4000')
+    lahetaGcode('G1 Z-32 F2000')
     lahetaGcode('M9')
-    lahetaGcode('G1 Z-1 F4000')
+    lahetaGcode('G1 Z-2 F2000')
     
     return
  
