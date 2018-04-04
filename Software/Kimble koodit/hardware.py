@@ -42,7 +42,7 @@ def peliAsento():
 
 def painaNoppaa():
     # Ajetaan nopan paalle
-    siirto = 'G1 Y1 Z1.3 F8000'
+    siirto = 'G1 Y1 Z1.6 F8000'
     lahetaGcode(siirto)  
     
     #painetaan noppaa
