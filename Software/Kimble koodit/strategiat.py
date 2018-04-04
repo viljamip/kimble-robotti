@@ -27,10 +27,8 @@ def siirtoOmaanMaaliin():
             peli.hyvyys[peli.siirrot.index(siirto)] -= 32
     return
 
-def lahtoPaikatVapaana():
+def vastustajienLahtoPaikatVapaana():
     for siirto in peli.siirrot:
-        if(siirto[0] == 0):
-            peli.hyvyys[peli.siirrot.index(siirto)] = 30 # oman lahtopaikan puhtaanapito omista nappuloista
         if(siirto[0] == 21 or siirto[0] == 14 or siirto[0] == 7):
             peli.hyvyys[peli.siirrot.index(siirto)] += 9 # vastustajien lahtopaikalta poistuminen
         if(siirto[1] == 21 or siirto[1] == 14 or siirto[1] == 7):
@@ -46,6 +44,10 @@ def eiKaikkiaKentalle(): # halutaan(ko?) pitaa vain 2 nappulaa kerrallaan pelial
         for siirto in peli.siirrot:
             if(siirto[0] == 32 or siirto[0] == 33 or siirto[0] == 34 or siirto[0] == 35):
                 peli.hyvyys[peli.siirrot.index(siirto)] = - 5 
+    else:
+        for siirto in peli.siirrot: # oman lahtopaikan puhtaanapito omista nappuloista vain jos kentalla ei ole jo kahta nappulaa
+            if(siirto[0] == 0):
+                peli.hyvyys[peli.siirrot.index(siirto)] = 30 
         
 def omaMaaliJarjestykseen():
     for siirto in peli.siirrot: # vahentaa jo maalissa olevien nappuloiden siirtojen hyvyytta
