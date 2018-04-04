@@ -16,7 +16,7 @@ hueBracket = [(90,120, BLUE), (0,10, RED), (150,180, RED), (65,90,GREEN), (11,30
 saturationBracket = [(0,0, None), (170,255, BLUE), (180,255, RED), (100,230,GREEN),(135,255,YELLOW)]
 valueBracket = [(0,0,0), (125,255, BLUE), (135,255, RED), (80,210,GREEN),(165,255,YELLOW)]
 
-maxVarianssi = 40
+maxVarianssi = 50
 
 def tulkitse(frame):
 	pelitilanne = []

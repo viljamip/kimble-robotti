@@ -42,13 +42,13 @@ def peliAsento():
 
 def painaNoppaa():
     # Ajetaan nopan paalle
-    siirto = 'G1 Y0 Z-1 F8000'
+    siirto = 'G1 Y1 Z1.3 F8000'
     lahetaGcode(siirto)  
     
     #painetaan noppaa
     siirto = 'G1  Z-20 F2000'
     lahetaGcode(siirto)
-    siirto = 'G1  Z-27.0 F500'
+    siirto = 'G1  Z-27.5 F500'
     lahetaGcode(siirto)
     siirto = 'G1  Z-2 F2000'
     lahetaGcode(siirto)
