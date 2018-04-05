@@ -12,11 +12,11 @@ nappulakolot = [(143, 608), (103, 548), (93, 472), (91, 400), (90, 327), (103, 2
 
 pelitilanne = []
 
-hueBracket = [(90,120, BLUE), (0,10, RED), (150,180, RED), (65,90,GREEN), (11,30,YELLOW)]
-saturationBracket = [(0,0, None), (170,255, BLUE), (180,255, RED), (100,230,GREEN),(135,255,YELLOW)]
-valueBracket = [(0,0,0), (125,255, BLUE), (135,255, RED), (80,210,GREEN),(165,255,YELLOW)]
+hueBracket = [(95,120, BLUE), (0,10, RED), (150,180, RED), (65,95,GREEN), (11,30,YELLOW)]
+saturationBracket = [(0,0, None), (170,255, BLUE), (180,255, RED), (100,250,GREEN),(135,255,YELLOW)]
+valueBracket = [(0,0,0), (120,255, BLUE), (125,255, RED), (65,210,GREEN),(150,255,YELLOW)]
 
-maxVarianssi = 50
+maxVarianssi = 80
 
 def tulkitse(frame):
 	pelitilanne = []
@@ -59,7 +59,7 @@ def tulkitse(frame):
 			
 		if not kaikkiKriteeritTasmaa:
 			tunnistettuVari = 0
-		#print(str(nappulakolot.index(kolo)) + " Väri: " + str(tunnistettuVari) + " varianssi: " + str(varianssi) + " H: " + str(hue)+ " S: " + str(saturation) + " V: " + str(value))
+		print(str(nappulakolot.index(kolo)) + " Väri: " + str(tunnistettuVari) + " varianssi: " + str(varianssi) + " H: " + str(hue)+ " S: " + str(saturation) + " V: " + str(value))
 		pelitilanne.append(tunnistettuVari)
 		cv.rectangle(frame, (kolo[0]-10, kolo[1]-10), (kolo[0]+10,kolo[1]+10), (128,128,128), 2)
 		
