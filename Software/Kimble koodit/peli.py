@@ -87,7 +87,7 @@ def strategia(siirrot):
     strategiat.siirtoOmaanMaaliin() #lisaa maaliin johtavan siirron hyvyytta niin, etta siita tulee ns dominoiva siirto. Mikali siirto on indeksiin 28 tai 31, ovat nama ensisijaisia
     strategiat.vastustajienLahtoPaikatVapaana() #pyrkii pitamaan oman lahtopaikan vapaana, ja samalla vahentamaan siirtojen hyvyytta. jotka johtavat toisen lahtopaikalle. Mikali nappula on jo toisen lahtopaikalla, niin hyvyytta kasvatetaan
     strategiat.eiKaikkiaKentalle() #vahentaa kotipesassa olevien siirtojen hyvyytta, mikali pelikentalla (poislukien maali) on jo 2 omaa nappulaa
-    strategiat.omaMaaliJarjestykseen() #talla hetkella funktio pitaa huolen, ettei indekseissa 28 ja 31 olevia nappuloita siirreta
+    #strategiat.omaMaaliJarjestykseen() #talla hetkella funktio pitaa huolen, ettei indekseissa 28 ja 31 olevia nappuloita siirreta
            
     print("hyvyys on:", hyvyys)
     print("siirrot ovat:", siirrot)

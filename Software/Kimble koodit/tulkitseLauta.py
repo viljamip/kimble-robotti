@@ -13,8 +13,8 @@ nappulakolot = [(143, 608), (103, 548), (93, 472), (91, 400), (90, 327), (103, 2
 pelitilanne = []
 
 hueBracket = [(95,120, BLUE), (0,10, RED), (150,180, RED), (65,95,GREEN), (11,30,YELLOW)]
-saturationBracket = [(0,0, None), (170,255, BLUE), (180,255, RED), (100,250,GREEN),(135,255,YELLOW)]
-valueBracket = [(0,0,0), (120,255, BLUE), (125,255, RED), (65,210,GREEN),(150,255,YELLOW)]
+saturationBracket = [(0,0, None), (212,255, BLUE), (180,255, RED), (100,250,GREEN),(135,255,YELLOW)]
+valueBracket = [(0,0,0), (130,255, BLUE), (125,255, RED), (65,210,GREEN),(150,255,YELLOW)]
 
 maxVarianssi = 80
 
@@ -61,9 +61,23 @@ def tulkitse(frame):
 			tunnistettuVari = 0
 		print(str(nappulakolot.index(kolo)) + " Väri: " + str(tunnistettuVari) + " varianssi: " + str(varianssi) + " H: " + str(hue)+ " S: " + str(saturation) + " V: " + str(value))
 		pelitilanne.append(tunnistettuVari)
+		if tunnistettuVari == 0:
+			cv.circle(frame, (kolo[0], kolo[1]), 18, (0,0,0), 2)
+		if tunnistettuVari == BLUE:
+			cv.circle(frame, (kolo[0], kolo[1]), 22, (255,10,10), 2)
+		if tunnistettuVari == RED:
+			cv.circle(frame, (kolo[0], kolo[1]), 22, (10,10,255), 2)
+		if tunnistettuVari == YELLOW:
+			cv.circle(frame, (kolo[0], kolo[1]), 22, (10,255,255), 2)
+		if tunnistettuVari == GREEN:
+			cv.circle(frame, (kolo[0], kolo[1]), 22, (10,255,10), 2)
+			
 		cv.rectangle(frame, (kolo[0]-10, kolo[1]-10), (kolo[0]+10,kolo[1]+10), (128,128,128), 2)
 		
-	#cv.imshow("lauta", frame)
+	cv.imshow("lauta", frame)
 	#cv.waitKey(0)	
 	peli.pelitilanne = pelitilanne
 	return 1
+	
+#frame = cv.imread("noppaTestiKuvat/5/noppa12.jpg")
+#tilanne = tulkitse(frame)

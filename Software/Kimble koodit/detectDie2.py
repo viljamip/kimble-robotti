@@ -131,5 +131,5 @@ def detect(frame):
 	#cv.waitKey(0)
 	return pipCount
 
-#frame = cv.imread("noppaTestiKuvat/6/noppa0.jpg")
+#frame = cv.imread("noppaTestiKuvat/5/noppa12.jpg")
 #silmaluku = detect(frame)
