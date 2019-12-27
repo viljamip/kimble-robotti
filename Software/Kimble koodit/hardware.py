@@ -57,7 +57,7 @@ def painaNoppaa():
     return 1
 
 def lahetaGcode(koodi):
-    # Tämä lisää tai vähentää yhden kierroksen pituuden X:ään, jos matka on siten lyhyempi
+    # Tämä lisäys tai vähentää yhden kierroksen pituuden X:sän, jos matka on siten lyhyempi
     if "X" in koodi:
         muokattuKoodi = koodi.split("X")
         alku = muokattuKoodi[0]
@@ -107,32 +107,34 @@ def kerroX():
     return float(x[0])
 
 def siirra(i1,i2):
-    print(koordinaatit[i1][0])
-    xAlku = koordinaatit[i1][0]
-    yAlku = koordinaatit[i1][1]
-    xLoppu = koordinaatit[i2][0]
-    yLoppu = koordinaatit[i2][1] 
-
-    zYlos = 'G1 Z-2 F6000'
-    lahetaGcode(zYlos)
-
-    nappaa = 'G1 X{} Y{} F6000'.format(xAlku, yAlku)
-    laske  = 'G1 X{} Y{} F6000'.format(xLoppu, yLoppu)
+    if ((i1 != -1) and (i2 != -1)):
+        print(koordinaatit[i1][0])
+        xAlku = koordinaatit[i1][0]
+        yAlku = koordinaatit[i1][1]
+        xLoppu = koordinaatit[i2][0]
+        yLoppu = koordinaatit[i2][1] 
     
-    #Haetaan nappi
-    lahetaGcode(nappaa)
-    lahetaGcode('G1 Z-32 F2000')
-    lahetaGcode('M8')
-    lahetaGcode('G1 Z-2 F2000')
+        zYlos = 'G1 Z-2 F4000'
+        lahetaGcode(zYlos)
     
-    #pudotetaan nappi
-    lahetaGcode(laske)
-    lahetaGcode('G1 Z-32 F2000')
-    lahetaGcode('M9')
-    lahetaGcode('G1 Z-2 F2000')
-    
+        nappaa = 'G1 X{} Y{} F8000'.format(xAlku, yAlku)
+        laske  = 'G1 X{} Y{} F8000'.format(xLoppu, yLoppu)
+        
+        #Haetaan nappi
+        lahetaGcode(nappaa)
+        lahetaGcode('G1 Z-32 F2000')
+        lahetaGcode('M8')
+        lahetaGcode('G1 Z-2 F2000')
+        
+        #pudotetaan nappi
+        lahetaGcode(laske)
+        lahetaGcode('G1 Z-32 F2000')
+        lahetaGcode('M9')
+        lahetaGcode('G1 Z-2 F2000')
+    else:
+        print("Lähtö tai loppupiste -1")
     return
- 
+     
 def valo(paalla):
     if paalla:
             lahetaGcode('M3 S1000')
