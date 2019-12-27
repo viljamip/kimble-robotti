@@ -1,3 +1,5 @@
+# coding=utf-8
+
 import serial
 import time
 import kamera
@@ -28,27 +30,27 @@ def homing():
 
 def kuvaAsento(kaannettu180=False):
     if kaannettu180:
-        asento = 'G1 X110 Y-174 Z-2 F8000' 
+        asento = 'G1 X110 Y-174 Z-2 F6000' 
     else:
-        asento = 'G1 X22 Y-174 Z-2 F8000' 
+        asento = 'G1 X22 Y-174 Z-2 F6000' 
     lahetaGcode(asento)
     return 1
 
 def peliAsento():
-    asento = 'G1 X0 Y-174 Z-2 F8000'
+    asento = 'G1 X0 Y-174 Z-2 F6000'
     lahetaGcode(asento)
     valo(True)
     return
 
 def painaNoppaa():
     # Ajetaan nopan paalle
-    siirto = 'G1 Y1 Z-2 F8000'
+    siirto = 'G1 Y1 Z-2 F6000'
     lahetaGcode(siirto)  
     
     #painetaan noppaa
     siirto = 'G1  Z-24 F2000'
     lahetaGcode(siirto)
-    siirto = 'G1  Z-27 F600'
+    siirto = 'G1  Z-28 F600'
     lahetaGcode(siirto)
     siirto = 'G1  Z-2 F2000'
     lahetaGcode(siirto)
@@ -111,11 +113,11 @@ def siirra(i1,i2):
     xLoppu = koordinaatit[i2][0]
     yLoppu = koordinaatit[i2][1] 
 
-    zYlos = 'G1 Z-2 F4000'
+    zYlos = 'G1 Z-2 F6000'
     lahetaGcode(zYlos)
 
-    nappaa = 'G1 X{} Y{} F8000'.format(xAlku, yAlku)
-    laske  = 'G1 X{} Y{} F8000'.format(xLoppu, yLoppu)
+    nappaa = 'G1 X{} Y{} F6000'.format(xAlku, yAlku)
+    laske  = 'G1 X{} Y{} F6000'.format(xLoppu, yLoppu)
     
     #Haetaan nappi
     lahetaGcode(nappaa)
