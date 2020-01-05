@@ -119,7 +119,7 @@ def tulkitsePeli():
     frame1 = otaKuva(False)
     frame2 = otaKuva(True)
     stitched = stitch(frame1, frame2)
-    cv.imshow("stitched", stitched)
+    #cv.imshow("stitched", stitched)
     peli.silmaluku = dD.detect(stitched)
     tulkittu = tL.tulkitse(stitched)
     #cv.waitKey(0)

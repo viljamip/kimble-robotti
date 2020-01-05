@@ -39,7 +39,7 @@ def detect(frame):
     threshold = cv.erode(threshold, kernel, iterations=3)
     threshold = cv.dilate(threshold, kernel, iterations=4)
     #cv.imshow("laplacian", laplacian)
-    cv.imshow("threshLap", threshold)
+    #cv.imshow("threshLap", threshold)
     
     treshWcontours, contours0, hierarchy = cv.findContours(threshold, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE) # find contours
     contours = [cv.approxPolyDP(cnt, 2, True) for cnt in contours0] # simplify contours
@@ -139,7 +139,7 @@ def detect(frame):
         return 1
     im_with_keypoints = cv.drawKeypoints(roiDie, validPoints, np.array([]), (0,0,255), cv.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
     im_with_keypoints = cv.drawContours(im_with_keypoints,[box],0,(0,255,0),2)
-    cv.imshow("Keypoints", im_with_keypoints)
+    #cv.imshow("Keypoints", im_with_keypoints)
 
     #minBoundingRect = cv.minAreaRect(keypoints)
     # TODO TÄHÄN VIELÄ TARKISTUS rect = minAreaRect() koolle (neljä nurkkaa saa box = cv.boxPoints(rect) ), jonka avulla voidaan heivata outlier pisteet pois eli, pituus eikä leveys saa olla liian suuret

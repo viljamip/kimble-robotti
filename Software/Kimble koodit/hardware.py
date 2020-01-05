@@ -33,11 +33,12 @@ def kuvaAsento(kaannettu180=False):
         asento = 'G1 X110 Y-174 Z-5 F6000' 
     else:
         asento = 'G1 X22 Y-174 Z-5 F6000' 
+    #lahetaGcode('G1 Z-5 F1000')
     lahetaGcode(asento)
     return 1
 
 def peliAsento():
-    ylos = 'G38.3 Z30 F1000'
+    ylos = 'G38.3 Z30 F1500'
     lahetaGcode(ylos)
     resetoiZ = 'G10L20P1Z0'
     lahetaGcode(resetoiZ)
@@ -54,7 +55,7 @@ def painaNoppaa():
     #painetaan noppaa
     siirto = 'G1  Z-24 F2000'
     lahetaGcode(siirto)
-    siirto = 'G1  Z-28 F600'
+    siirto = 'G1  Z-29 F600'
     lahetaGcode(siirto)
     siirto = 'G1  Z-5 F2000'
     lahetaGcode(siirto)

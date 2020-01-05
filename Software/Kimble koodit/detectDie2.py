@@ -102,7 +102,7 @@ def detect(frame):
 	noppaContours = [cv.approxPolyDP(cnt, 2, True) for cnt in contours0] # simplify contours
 	
 	pipCount = 0
-	cv.imshow("nT", noppaTreshold)
+	#cv.imshow("nT", noppaTreshold)
 	for c in noppaContours:
 		area = cv.contourArea(c)
 		print(area)
@@ -125,9 +125,9 @@ def detect(frame):
 	cv.drawContours(frameR,[box],0,(0,0,0),2)
 	print("Silmäluku: {0}".format(pipCount))
 	
-	cv.imshow("tresh", thresholdImage)
-	cv.imshow("R", frameR)
-	cv.imshow("noppaTreshold", noppaTreshold)
+	#cv.imshow("tresh", thresholdImage)
+	#cv.imshow("R", frameR)
+	#cv.imshow("noppaTreshold", noppaTreshold)
 	#cv.waitKey(0)
 	return pipCount
 
