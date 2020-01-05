@@ -26,6 +26,9 @@ def homing():
     time.sleep(1)   # Wait for grbl to initialize 
     lahetaGcode(homing)
     odotaPysahtymista()
+    resetoiZ = 'G10L20P1Z-2'
+    lahetaGcode(resetoiZ)
+    odotaPysahtymista()
     return
 
 def kuvaAsento(kaannettu180=False):
