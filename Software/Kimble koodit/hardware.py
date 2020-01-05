@@ -37,6 +37,10 @@ def kuvaAsento(kaannettu180=False):
     return 1
 
 def peliAsento():
+    ylos = 'G38.3 Z30 F1000'
+    lahetaGcode(ylos)
+    resetoiZ = 'G10L20P1Z0'
+    lahetaGcode(resetoiZ)
     asento = 'G1 X0 Y-174 Z-2 F6000'
     lahetaGcode(asento)
     valo(True)
@@ -52,7 +56,7 @@ def painaNoppaa():
     lahetaGcode(siirto)
     siirto = 'G1  Z-28 F600'
     lahetaGcode(siirto)
-    siirto = 'G1  Z-2 F2000'
+    siirto = 'G1  Z-5 F2000'
     lahetaGcode(siirto)
     return 1
 
@@ -124,13 +128,13 @@ def siirra(i1,i2):
         lahetaGcode(nappaa)
         lahetaGcode('G1 Z-32 F2000')
         lahetaGcode('M8')
-        lahetaGcode('G1 Z-2 F2000')
+        lahetaGcode('G1 Z-5 F2000')
         
         #pudotetaan nappi
         lahetaGcode(laske)
         lahetaGcode('G1 Z-32 F2000')
         lahetaGcode('M9')
-        lahetaGcode('G1 Z-2 F2000')
+        lahetaGcode('G1 Z-5 F2000')
     else:
         print("Lähtö tai loppupiste -1")
     return
