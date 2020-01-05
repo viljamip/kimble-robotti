@@ -11,7 +11,7 @@ kierroksenPituus = 176
 
 def openSerial():
     global s
-    s = serial.Serial("/dev/cu.usbserial-DN03VXGO",115200) #/dev/cu.usbserial-DN03VXGO 
+    s = serial.Serial("/dev/ttyUSB0",115200) #/dev/cu.usbserial-DN03VXGO 
     return 1
 
 def closeSerial():
@@ -30,9 +30,9 @@ def homing():
 
 def kuvaAsento(kaannettu180=False):
     if kaannettu180:
-        asento = 'G1 X110 Y-174 Z-2 F6000' 
+        asento = 'G1 X110 Y-174 Z-5 F6000' 
     else:
-        asento = 'G1 X22 Y-174 Z-2 F6000' 
+        asento = 'G1 X22 Y-174 Z-5 F6000' 
     lahetaGcode(asento)
     return 1
 
@@ -41,14 +41,14 @@ def peliAsento():
     lahetaGcode(ylos)
     resetoiZ = 'G10L20P1Z0'
     lahetaGcode(resetoiZ)
-    asento = 'G1 X0 Y-174 Z-2 F6000'
+    asento = 'G1 X0 Y-174 Z-5 F6000'
     lahetaGcode(asento)
     valo(True)
     return
 
 def painaNoppaa():
     # Ajetaan nopan paalle
-    siirto = 'G1 Y1 Z-2 F6000'
+    siirto = 'G1 Y1 Z-5 F6000'
     lahetaGcode(siirto)  
     
     #painetaan noppaa
@@ -118,7 +118,7 @@ def siirra(i1,i2):
         xLoppu = koordinaatit[i2][0]
         yLoppu = koordinaatit[i2][1] 
     
-        zYlos = 'G1 Z-2 F4000'
+        zYlos = 'G1 Z-5 F4000'
         lahetaGcode(zYlos)
     
         nappaa = 'G1 X{} Y{} F8000'.format(xAlku, yAlku)

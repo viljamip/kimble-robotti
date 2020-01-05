@@ -10,7 +10,7 @@ import time
 
 
 global vcap
-vcap = cv.VideoCapture(1) # Numero 0 jos vain 1 kamera kiinni
+vcap = cv.VideoCapture(0) # Numero 0 jos vain 1 kamera kiinni
 #global M
 #M = np.matrix([[7.11917556e-01, -1.44540651e-02, -2.96267546e+02], [3.99171038e-03, 6.99505257e-01, 8.02079917e+00],[-3.27631658e-07, -2.73692836e-05, 1.00000000e+00]])
 
