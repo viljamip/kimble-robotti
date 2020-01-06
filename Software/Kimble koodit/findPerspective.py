@@ -1,6 +1,11 @@
+import os
 import numpy as np
 import cv2 as cv
 from matplotlib import pyplot as plt
+
+script_dir = os.path.dirname(__file__)
+refPath = 'img/kimble_ref_800.jpg'
+absRefPath = os.path.join(script_dir, refPath)
 
 def findTranform(sourceImage, referenceImage=None):
     MIN_MATCH_COUNT = 10
@@ -8,10 +13,10 @@ def findTranform(sourceImage, referenceImage=None):
     #sourceImage = captureImage.captureFrame()
     queryImage = cv.cvtColor(sourceImage, cv.COLOR_BGR2GRAY)
     if referenceImage == None:
-        refImage = cv.imread('img/kimble_ref_800.jpg',0) # trainImage
+        refImage = cv.imread(absRefPath,0) # trainImage
     else:
         refImage = referenceImage
-        
+
     cv.normalize(sourceImage, sourceImage, 0, 255, cv.NORM_MINMAX)
     cv.normalize(queryImage, queryImage, 0, 255, cv.NORM_MINMAX)
 

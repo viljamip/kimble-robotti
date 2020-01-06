@@ -1,3 +1,4 @@
+import os
 import cv2 as cv
 import numpy as np
 import math
@@ -11,6 +12,9 @@ import time
 
 global vcap
 vcap = cv.VideoCapture(0) # Numero 0 jos vain 1 kamera kiinni
+os.system('v4l2-ctl --set-ctrl brightness=160')
+os.system('v4l2-ctl --set-ctrl saturation=170')
+
 #global M
 #M = np.matrix([[7.11917556e-01, -1.44540651e-02, -2.96267546e+02], [3.99171038e-03, 6.99505257e-01, 8.02079917e+00],[-3.27631658e-07, -2.73692836e-05, 1.00000000e+00]])
 
@@ -28,7 +32,7 @@ def kalibroiPerspektiivi():
     h,w,_ = frame.shape
     amountToCut = int((w - h) / 2)
     frame = frame[0:h, amountToCut:(w - amountToCut)]
-    #cv.imshow("kuva", frame)
+    #cv.imshow("kuva", image8bit)
     #cv.waitKey(0)
     global M
     M = fP.findTranform(frame)
