@@ -12,8 +12,9 @@ import time
 
 global vcap
 vcap = cv.VideoCapture(0) # Numero 0 jos vain 1 kamera kiinni
-os.system('v4l2-ctl --set-ctrl brightness=160')
-os.system('v4l2-ctl --set-ctrl saturation=170')
+vcap.set(cv.CAP_PROP_BUFFERSIZE, 1)
+#os.system('v4l2-ctl --set-ctrl brightness=160')
+#os.system('v4l2-ctl --set-ctrl saturation=170')
 
 #global M
 #M = np.matrix([[7.11917556e-01, -1.44540651e-02, -2.96267546e+02], [3.99171038e-03, 6.99505257e-01, 8.02079917e+00],[-3.27631658e-07, -2.73692836e-05, 1.00000000e+00]])
@@ -47,6 +48,8 @@ def otaKuva(kaannettu180=False):
     ret = hardware.kuvaAsento(kaannettu180)
     hardware.odotaPysahtymista()
     #time.sleep(0.2)
+    for i in range(1):
+        vcap.grab()
     ret, frame = vcap.read()
     if not ret:
         print("Kameran kanssa oli ongelma.")
@@ -122,10 +125,13 @@ def exposureSmoothing(frame):
 def tulkitsePeli():
     frame1 = otaKuva(False)
     frame2 = otaKuva(True)
+    #cv.imshow('frame1', frame1)
+    #cv.imshow('frame2', frame2)
     stitched = stitch(frame1, frame2)
     #cv.imshow("stitched", stitched)
     peli.silmaluku = dD.detect(stitched)
     tulkittu = tL.tulkitse(stitched)
+    print('Lauta tulkittu')
     #cv.waitKey(0)
 
 def applyTransform(frame, M):

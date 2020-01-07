@@ -74,8 +74,8 @@ def tulkitse(frame):
 			
 		cv.rectangle(frame, (kolo[0]-10, kolo[1]-10), (kolo[0]+10,kolo[1]+10), (128,128,128), 2)
 		
-	#cv.imshow("lauta", frame)
-	#cv.waitKey(0)	
+	cv.imshow("lauta", frame)
+	cv.waitKey(0)	
 	peli.pelitilanne = pelitilanne
 	return 1
 	
