@@ -16,7 +16,7 @@ hueBracket = [(95,120, BLUE), (0,10, RED), (150,180, RED), (65,95,GREEN), (11,30
 saturationBracket = [(0,0, None), (212,255, BLUE), (180,255, RED), (100,250,GREEN),(135,255,YELLOW)]
 valueBracket = [(0,0,0), (130,255, BLUE), (125,255, RED), (65,210,GREEN),(150,255,YELLOW)]
 
-maxVarianssi = 80
+maxVarianssi = 60
 
 def tulkitse(frame):
 	pelitilanne = []
@@ -74,8 +74,8 @@ def tulkitse(frame):
 			
 		cv.rectangle(frame, (kolo[0]-10, kolo[1]-10), (kolo[0]+10,kolo[1]+10), (128,128,128), 2)
 		
-	cv.imshow("lauta", frame)
-	cv.waitKey(0)	
+	#cv.imshow("lauta", frame)
+	#cv.waitKey(0)	
 	peli.pelitilanne = pelitilanne
 	return 1
 	
