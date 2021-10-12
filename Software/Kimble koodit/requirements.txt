@@ -5,7 +5,7 @@ iso8601==0.1.12
 kiwisolver==1.1.0
 matplotlib==3.1.2
 numpy==1.18.0
-opencv-contrib-python==3.4.2.16
+opencv-contrib-python==4.2.0.32
 opencv-python==3.4.2.16
 pyparsing==2.4.6
 pyserial==3.4
